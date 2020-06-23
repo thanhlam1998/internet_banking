@@ -52,10 +52,28 @@ const findCustomer = (credit_number) => {
   });
 };
 
+const addMoneyToCustomer = (credit_number, amount) => {
+  const token = sessionStorage.getItem(NameItem.ACCESS_TOKEN);
+  return axios
+    .post(`${baseURL}/api/employee/deposit-customer-credit`, {
+      credit_number,
+      amount
+    },
+    {
+      headers: {
+        access_token: token,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    });
+};
+
 
 
 export const EmpServices = {
   login,
   addCustomer,
-  findCustomer
+  findCustomer,
+  addMoneyToCustomer
 };
