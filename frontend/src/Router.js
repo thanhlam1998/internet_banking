@@ -20,7 +20,7 @@ const Router = () => {
       <Redirect exact from="/" to="/login"></Redirect>
       <Route exact path="/login" component={CustomerLoginPage} />
       <Route exact path="/forgotPassword" component={ForgotPasswordPage} />
-      <Route exact path="/dashboard" component={CustomerHomepage} />
+      <Route path="/dashboard" component={CustomerHomepage} />
 
       <Route exact path="/employee" component={EmployeeLoginPage} />
       <Route path="/employee/dashboard" component={EmployeeHomepage} />

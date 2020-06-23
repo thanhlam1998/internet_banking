@@ -1,5 +1,5 @@
 import React from 'react'
-import { useRouteMatch, Switch, Route, useLocation } from 'react-router-dom'
+import { useRouteMatch, Switch, Route, useLocation, Redirect } from 'react-router-dom'
 import BankAccount from './components/content/bankAccount/bankAccount'
 import TransferLocal from './components/content/transfer/transferLocal/transferLocal'
 import TransferAbroad from './components/content/transfer/transferAbroad/transferAbroad'
@@ -13,7 +13,7 @@ const Router = () => {
     let match = useRouteMatch();
     return (
         <Switch>    
-            <PrivateRoute exact path={`${match.url}`} component={BankAccount} />
+            <Redirect exact from={`${match.path}`}  to={`${match.path}/bankaccount`}/>}/>
             <PrivateRoute exact path={`${match.url}/bankaccount`} component={BankAccount}/>
             <PrivateRoute exact path={`${match.url}/transfer/kiantobank`} component={TransferLocal}/>
             <PrivateRoute exact path={`${match.url}/transfer/otherbank`} component={TransferAbroad}/>
