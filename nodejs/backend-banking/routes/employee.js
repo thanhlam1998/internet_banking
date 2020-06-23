@@ -121,10 +121,10 @@ router.post("/deposit-customer-credit", authenJWT, async (req, res) => {
 
 /* GET transaction history of a customer */
 router.get("/get-customer-transactions", authenJWT, async (req, res) => {
-  const customer_id = req.query.customer_id;
+  const credit_number = req.query.credit_number;
   let result;
 
-  result = await creditAccountModel.searchByCustomerId(customer_id);
+  result = await creditAccountModel.searchByAccountNumber(credit_number);
   const creditInfo = result[0];
 
   const depositHis = await customerModel.getDepositTransactionHistory(creditInfo["credit_number"]);
