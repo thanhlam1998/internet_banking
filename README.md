@@ -422,7 +422,7 @@ BODY
 #### Liệt kê lịch sử giao dịch của một khách hàng nhất định
 
 ```json
-GET /api/employee/get-customer-transactions?customer_id=3
+GET /api/employee/get-customer-transactions?credit_number=025917154505
 
 HEADER
 "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6MSwiaWF0IjoxNTkyNzI0OTYyLCJleHAiOjE1OTI3MzA5NjJ9.TQKAStKk_XbFc3kNmGFP4kkXaXYzNl1LjkrGpuWn9co"
