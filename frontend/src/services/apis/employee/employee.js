@@ -69,11 +69,27 @@ const addMoneyToCustomer = (credit_number, amount) => {
     });
 };
 
-
+const findTransactionHistory = (credit_number) => {
+  const token = sessionStorage.getItem(NameItem.ACCESS_TOKEN);
+  return axios
+    .get(`${baseURL}/api/employee/get-customer-transactions`,
+    {
+      headers: {
+        access_token: token,
+      },
+      params: {
+        credit_number
+      }
+    })
+    .then((res) => {
+      return res.data;
+    });
+};
 
 export const EmpServices = {
   login,
   addCustomer,
   findCustomer,
-  addMoneyToCustomer
+  addMoneyToCustomer,
+  findTransactionHistory
 };

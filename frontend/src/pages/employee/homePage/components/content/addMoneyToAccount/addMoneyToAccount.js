@@ -49,7 +49,7 @@ const AddMoneyToAccount = ({employee, findCustomer, addMoneyToCustomer}) => {
         window.location.reload();
       }, 2000)
     }
-    if(employee.addMoneyToCustomerErro){
+    if(employee.addMoneyToCustomerError){
       NotificationManager.error('Có lỗi xảy ra vui lòng thử lại sau');
     }
   }, [employee])

@@ -74,10 +74,28 @@ function addMoneyToCustomer(credit_number, amount){
     function failure(error){return{type: EmpConstants.ADD_MONEY_TO_CUSTOMER_ERROR, payload: error}};
 };
 
+function findTransactionHistory(credit_number){
+  return (dispatch) => {
+    dispatch(request());
+    EmpServices.findTransactionHistory(credit_number)
+    .then(
+      res =>{
+        dispatch(success(res))
+      }
+      ).catch(error => {
+        dispatch(failure(error.response.data))
+      }) 
+    };
+    function request(){ return{type: EmpConstants.FIND_TRANSACTION_HISTORY_PENDING}};
+    function success(res){return{type: EmpConstants.FIND_TRANSACTION_HISTORY_SUCCESS, payload: res}};
+    function failure(error){return{type: EmpConstants.FIND_TRANSACTION_HISTORY_ERROR, payload: error}};
+};
+
 export const employeeActions = {
   login, 
   logout,
   addCustomer,
   findCustomer,
-  addMoneyToCustomer
+  addMoneyToCustomer,
+  findTransactionHistory
 }

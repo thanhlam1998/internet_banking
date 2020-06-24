@@ -50,7 +50,7 @@ const bankAccount = (state = initialState, action) => {
         loginError: action.payload,
       };
 
-    /* ----------------------------- get reming list ---------------------------- */
+    /* ----------------------------- get remind list ---------------------------- */
     case BankAccountConstants.GET_REMIND_LIST_PENDING:
       return {
         remindListPending: true,
