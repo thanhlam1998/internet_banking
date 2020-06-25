@@ -40,15 +40,29 @@ const TransactionHistory = ({ employee, findCustomer, findTransactionHistory }) 
     }
   }, [endDate]);
 
+  const checkValidDate = (ts) =>{
+    const date = new Date(ts*1000);
+    const start = new Date(startDate)
+    const end = new Date(endDate)
+    if(date.getFullYear()>=start.getFullYear() && date.getFullYear()<=end.getFullYear()){
+      if(date.getMonth()>=start.getMonth() && date.getMonth()<=end.getMonth()){
+        if(date.getDate()>=start.getDate() && date.getDate()<=end.getDate()){
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   const tsToDate = (ts) => {
     const date = new Date(ts * 1000);
-    const day = date.getDay();
-    const month = date.getMonth();
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
     const year = date.getFullYear();
     const formatDate = `${day}-${month}-${year}`;
     return formatDate;
   };
-
+  
   const tsToTime = (ts) => {
     const date = new Date(ts * 1000);
     var hours = date.getHours();
@@ -77,10 +91,8 @@ const TransactionHistory = ({ employee, findCustomer, findTransactionHistory }) 
         allTransaction.receivefrom_history, allTransaction.deposit_history
       );
       compose.sort((a, b) => a.ts - b.ts);
-      const start = Math.round(startDate / 1000);
-      const end = Math.round(endDate / 1000);
       const searchTransaction = compose.filter(
-        (item) => item.ts >= start && item.ts <= end
+        (item) => checkValidDate(item.ts)
       );
       setTransactions(searchTransaction);
     }
@@ -146,9 +158,9 @@ const TransactionHistory = ({ employee, findCustomer, findTransactionHistory }) 
                         <td>{item.transaction_id}</td>
                         {item.to_credit_number &&
                         <td><b>Gửi</b></td>}
-                        {item.from_credit_number &&
+                        {(item.from_credit_number || item.partner_code !== 'local') &&
                         <td><b>Nhận</b></td>}
-                        {!item.to_credit_number && !item.from_credit_number &&
+                        {!item.to_credit_number && !item.from_credit_number && item.partner_code === 'local' &&
                         <td><b>Nạp tiền</b></td>}
                         <td>{formatMoney(item.amount)}</td>
                         <td className="max-width-desc">
@@ -162,6 +174,11 @@ const TransactionHistory = ({ employee, findCustomer, findTransactionHistory }) 
                                 <b>Nội dung: </b>{item.message}
                               </span>
                               <br/>
+                          </div>}
+                          {item.partner_code !== 'local' && 
+                          <div>
+                            <span><b>Từ: </b>{item.partner_code}</span>
+                            <br/>
                           </div>}
                           <span><b>Thời gian: </b>{tsToTime(item.ts)}</span>
                         </td>
