@@ -91,5 +91,5 @@ export const EmpServices = {
   addCustomer,
   findCustomer,
   addMoneyToCustomer,
-  findTransactionHistory
+  findTransactionHistory,
 };

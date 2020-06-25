@@ -5,6 +5,14 @@ const initialState = {
   loggingIn: false,
   loginSuccess: false,
   loginError: null,
+
+  getAllEmployeePending: false,
+  getAllEmployeeSuccess: false,
+  getAllEmployeeError: null,
+  
+  createEmployeePending: false,
+  createEmployeeSuccess: false,
+  createEmployeeError: null,
 };
 
 const admin = (state = initialState, action) => {
@@ -43,6 +51,45 @@ const admin = (state = initialState, action) => {
       return {
         logout: true,
       };
+
+    case AdminConstants.GET_ALL_EMPLOYEE_PENDING:
+      return {
+        getAllEmployeePending: true,
+        getAllEmployeeSuccess: false,
+        getAllEmployeeError: null,
+      }
+    case AdminConstants.GET_ALL_EMPLOYEE_SUCCESS:
+      return {
+        getAllEmployeePending: false,
+        getAllEmployeeSuccess: true,
+        getAllEmployeeError: null,
+        allEmployee: action.payload
+      }
+    case AdminConstants.GET_ALL_EMPLOYEE_ERROR:
+      return {
+        getAllEmployeePending: false,
+        getAllEmployeeSuccess: false,
+        getAllEmployeeError: action.payload,
+      }
+
+    case AdminConstants.CREATE_EMPLOYEE_PENDING:
+      return {
+        createEmployeePending: true,
+        createEmployeeSuccess: false,
+        createEmployeeError: null,
+      }
+    case AdminConstants.CREATE_EMPLOYEE_SUCCESS:
+      return {
+        createEmployeePending: false,
+        createEmployeeSuccess: true,
+        createEmployeeError: null,
+      }
+    case AdminConstants.CREATE_EMPLOYEE_ERROR:
+      return {
+        createEmployeePending: false,
+        createEmployeeSuccess: false,
+        createEmployeeError: action.payload,
+      }
     default:
       return state;
   }

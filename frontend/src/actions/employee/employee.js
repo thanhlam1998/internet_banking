@@ -97,5 +97,5 @@ export const employeeActions = {
   addCustomer,
   findCustomer,
   addMoneyToCustomer,
-  findTransactionHistory
+  findTransactionHistory,
 }
