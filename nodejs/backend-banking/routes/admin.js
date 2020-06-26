@@ -148,7 +148,7 @@ router.post('/update-employee-password', authenJWT, async (req,res) => {
 
 /* GET request get employee list */
 router.get("/employee-list", authenJWT, async (req, res) => {
-  const employee_list = await employeeModel.getEmployeeList;
+  const employee_list = await employeeModel.getEmployeeList();
   res.status(200).json(employee_list);
 })
 
