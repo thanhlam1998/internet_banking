@@ -11,7 +11,9 @@ import { connect } from 'react-redux';
 const EmployeeList = ({admin, getAllEmployee, createEmployee, deleteEmployee, updatePasswordEmployee}) => {
     const [show, setShow] = useState(false);
     const [search, setSearch] = useState('');
+    const [item, setItem] = useState()
     const [employee, setEmployee] = useState();
+    const [backupEmployee, setBackupEmployee] = useState();
     const [isModalEdit, setIsModalEdit] = useState(false);
 
     useEffect(() => {
@@ -19,26 +21,53 @@ const EmployeeList = ({admin, getAllEmployee, createEmployee, deleteEmployee, up
     }, [])
 
     useEffect(() => {
+      if(search === ''){
+        setEmployee(backupEmployee)
+      }
+    }, [search])
+
+    useEffect(() => {
+      if(search){
+        handleSearch()
+      }
+    }, [backupEmployee])
+
+    useEffect(() => {
       if(admin.getAllEmployeeSuccess === true){
         setEmployee(admin.allEmployee)
+        setBackupEmployee(admin.allEmployee)
       }
       if(admin.createEmployeeSuccess === true){
         NotificationManager.success('Tạo tài khoản thành công');
         getAllEmployee();
         setShow(false)
       }
+      if(admin.updatePasswordEmployeeSuccess === true){
+        NotificationManager.success('Cập nhật mật khẩu thành công');
+        getAllEmployee();
+        setShow(false)
+      }
+      if(admin.deleteEmployeeSuccess === true){
+        NotificationManager.success('Xóa tài khoản thành công');
+        getAllEmployee();
+      }
     }, [admin])
 
-    const handleEdit = () => {
+    const handleEdit = (item) => {
       setShow(true);
       setIsModalEdit(true);
+      setItem(item)
     }
 
-    const handleDelete = () => {
-
+    const handleDelete = (employee_id) => {
+      deleteEmployee(employee_id)
     }
 
     const handleSearch =() => {
+      const searchValue = backupEmployee.filter(
+        (item) =>
+          item.username.toLowerCase().includes(search.toLowerCase()))
+      setEmployee(searchValue);
     }
     const handleCreate = () => {
         setShow(true);
@@ -65,6 +94,7 @@ const EmployeeList = ({admin, getAllEmployee, createEmployee, deleteEmployee, up
             setShow={setShow}
             isModalEdit={isModalEdit}
             admin={admin}
+            item = {item}
             createEmployee={createEmployee}
             updatePasswordEmployee={updatePasswordEmployee}/>
         </div>
@@ -98,7 +128,7 @@ const EmployeeList = ({admin, getAllEmployee, createEmployee, deleteEmployee, up
                         </li>
                         <li className="list-inline-item">
                           <button
-                            onClick={() => handleDelete(item.remind_id)}
+                            onClick={() => handleDelete(item.employee_id)}
                             className="btn btn-danger btn-sm rounded-0"
                             type="button"
                             data-toggle="tooltip"

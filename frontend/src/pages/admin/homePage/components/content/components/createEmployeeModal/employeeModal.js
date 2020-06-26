@@ -15,8 +15,9 @@ const RemindListModal = (props) => {
 
   useEffect(() => {
     if(props.isModalEdit === true){
-      
+      setUsername(props.item.username)
     }
+    console.log(props.item)
   }, [props.isModalEdit])
 
   const handleCreate = () => {
@@ -32,14 +33,19 @@ const RemindListModal = (props) => {
   };
 
   const handleUpdate = () => {
-    if (!username) {
-      NotificationManager.warning('Vui lòng nhập số tài khoản');
-      return;
-    }
     if (!password) {
-      NotificationManager.warning('Vui lòng nhập tên gợi nhớ');
+      NotificationManager.warning('Vui lòng nhập mật khẩu');
       return;
     }
+    if (!confirmPassword) {
+      NotificationManager.warning('Vui lòng nhập mật khẩu xác nhận');
+      return;
+    }
+    if (password !== confirmPassword) {
+      NotificationManager.warning('Mật khẩu xác nhận không trùng khớp');
+      return;
+    }
+    props.updatePasswordEmployee(props.item.employee_id, password)
   }
 
   return (
@@ -56,6 +62,7 @@ const RemindListModal = (props) => {
             title="Tên tài khoản"
             placeholder="Tên tài khoản"
             disabled = {props.isModalEdit === true ? true : false}
+            value={username || ''}
             onChange={(e) => setUsername(e.target.value)}
           />
           {props.isModalEdit === false &&

@@ -13,6 +13,14 @@ const initialState = {
   createEmployeePending: false,
   createEmployeeSuccess: false,
   createEmployeeError: null,
+  
+  updatePasswordEmployeePending: false,
+  updatePasswordEmployeeSuccess: false,
+  updatePasswordEmployeeError: null,
+
+  deleteEmployeePending: false,
+  deleteEmployeeSuccess: false,
+  deleteEmployeeError: null,
 };
 
 const admin = (state = initialState, action) => {
@@ -90,6 +98,44 @@ const admin = (state = initialState, action) => {
         createEmployeeSuccess: false,
         createEmployeeError: action.payload,
       }
+
+    case AdminConstants.UPDATE_PASSWORD_EMPLOYEE_PENDING:
+      return {
+        updatePasswordEmployeePending: true,
+        updatePasswordEmployeeSuccess: false,
+        updatePasswordEmployeeError: null,
+      }
+    case AdminConstants.UPDATE_PASSWORD_EMPLOYEE_SUCCESS:
+      return {
+        updatePasswordEmployeePending: false,
+        updatePasswordEmployeeSuccess: true,
+        updatePasswordEmployeeError: null,
+      }
+    case AdminConstants.UPDATE_PASSWORD_EMPLOYEE_ERROR:
+      return {
+        updatePasswordEmployeePending: false,
+        updatePasswordEmployeeSuccess: false,
+        updatePasswordEmployeeError: action.payload,
+      }
+
+      case AdminConstants.DELETE_EMPLOYEE_PENDING:
+        return {
+          deleteEmployeePending: true,
+          deleteEmployeeSuccess: false,
+          deleteEmployeeError: null,
+        }
+      case AdminConstants.DELETE_EMPLOYEE_SUCCESS:
+        return {
+          deleteEmployeePending: false,
+          deleteEmployeeSuccess: true,
+          deleteEmployeeError: null,
+        }
+      case AdminConstants.DELETE_EMPLOYEE_ERROR:
+        return {
+          deleteEmployeePending: false,
+          deleteEmployeeSuccess: false,
+          deleteEmployeeError: action.payload,
+        }
     default:
       return state;
   }
