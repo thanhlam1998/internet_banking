@@ -17,13 +17,11 @@ const TransferHistory = ({ bankAccount, getTransactionHistory }) => {
     if (bankAccount.getTransactionHistorySuccess === true) {
       const allTransaction = bankAccount.transactionHistory;
       const compose = allTransaction.sendto_history.concat(
-        allTransaction.receivefrom_history
+        allTransaction.receivefrom_history, allTransaction.deposit_history
       );
       compose.sort((a, b) => a.ts - b.ts);
-      const start = Math.round(startDate / 1000);
-      const end = Math.round(endDate / 1000);
       const searchTransaction = compose.filter(
-        (item) => item.ts >= start && item.ts <= end
+        (item) => checkValidDate(item.ts)
       );
       setTransactions(searchTransaction);
     }
@@ -45,13 +43,38 @@ const TransferHistory = ({ bankAccount, getTransactionHistory }) => {
     getTransactionHistory();
   };
 
+  const checkValidDate = (ts) =>{
+    const date = new Date(ts*1000);
+    const start = new Date(startDate)
+    const end = new Date(endDate)
+    if(date.getFullYear()>=start.getFullYear() && date.getFullYear()<=end.getFullYear()){
+      if(date.getMonth()>=start.getMonth() && date.getMonth()<=end.getMonth()){
+        if(date.getDate()>=start.getDate() && date.getDate()<=end.getDate()){
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   const tsToDate = (ts) => {
     const date = new Date(ts*1000)
-    const day = date.getDay();
-    const month = date.getMonth();
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
     const year = date.getFullYear();
     const formatDate = `${day}-${month}-${year}`
     return formatDate
+  }
+
+  const tsToTime = (ts) => {
+    const date = new Date(ts * 1000)
+    var hours = date.getHours();
+    // Minutes part from the timestamp
+    var minutes = "0" + date.getMinutes();
+    // Seconds part from the timestamp
+    var seconds = "0" + date.getSeconds();
+    var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+    return formattedTime
   }
 
   const formatMoney = (money) => {
@@ -100,22 +123,34 @@ const TransferHistory = ({ bankAccount, getTransactionHistory }) => {
           <tbody>
             {transactions &&
               transactions.map((item) => (
-                <tr className={item.from_credit_number ? "table-success" : "table-danger"} key={item.transaction_id}>
+                <tr className={item.to_credit_number ? "table-danger" : "table-success"} key={item.transaction_id}>
                   <td>{tsToDate(item.ts)}</td>
                   <td>{item.transaction_id}</td>
                   {item.to_credit_number &&
-                  <td>Gửi</td>}
-                  {item.from_credit_number &&
-                  <td>Nhận</td>}
+                  <td><b>Gửi</b></td>}
+                  {(item.from_credit_number || item.partner_code !== 'local') &&
+                  <td><b>Nhận</b></td>}
+                  {!item.to_credit_number && !item.from_credit_number && item.partner_code === 'local' &&
+                  <td><b>Nạp tiền</b></td>}
                   <td>{formatMoney(item.amount)}</td>
                   <td className="max-width-desc">
-                    <span><b>Tài khoản gửi: </b>{item.to_credit_number ? item.credit_number : item.from_credit_number}</span>
-                    <br />
-                    <span><b>Tài khoản nhận: </b>{item.to_credit_number ? item.to_credit_number : item.credit_number}</span>
-                    <br />
-                    <span>
-                      <b>Nội dung: </b>{item.message}
-                    </span>
+                    {item.message && 
+                    <div>
+                        <span><b>Tài khoản gửi: </b>{item.to_credit_number ? item.credit_number : item.from_credit_number}</span>
+                        <br />
+                        <span><b>Tài khoản nhận: </b>{item.to_credit_number ? item.to_credit_number : item.credit_number}</span>
+                        <br />
+                        <span>
+                          <b>Nội dung: </b>{item.message}
+                        </span>
+                        <br/>
+                    </div>}
+                    {item.partner_code !== 'local' && 
+                    <div>
+                      <span><b>Từ: </b>{item.partner_code}</span>
+                      <br/>
+                    </div>}
+                    <span><b>Thời gian: </b>{tsToTime(item.ts)}</span>
                   </td>
                 </tr>
               ))}

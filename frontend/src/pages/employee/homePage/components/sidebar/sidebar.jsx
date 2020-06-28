@@ -8,16 +8,15 @@ import { connect } from 'react-redux';
 const Sidebar = ({logout}) => {
   const match = useRouteMatch()
   const SideBarList = [
-    {name: 'Tra cứu tài khoản', url: `${match.path}/searchAccount`},
-    {name: 'Tạo tài khoản', url: `${match.path}/createAccount`},
+    {name: 'Tạo tài khoản', url: `${match.path}/addCustomer`},
     {name: 'Nạp tiền', url: `${match.path}/addMoney`},
     {name: 'Xem lịch sử giao dịch', url: `${match.path}/history`},
-    {name: 'Thoát', url: `${window.location.origin}/employee`, onClick: () => logout()},
+    {name: 'Thoát', url: `${match.path}/logout`, onClick: () => logout()},
   ]
 
   let SideBarComponent = SideBarList.map((item, index) => {
     return(
-      <NavLink to={item.url} className="list-group-item list-group-item-action bg-light navLink" onClick={item.onClick} activeClassName='activeNavLink'>
+      <NavLink key={index} to={item.url} className="list-group-item list-group-item-action bg-light navLink" onClick={item.onClick} activeClassName='activeNavLink'>
         {item.name}
       </NavLink>
     )

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from './components/sidebar/sidebar';
-import Content from './components/content/content';
 import Navbar from './components/navbar/navbar';
 import "./homePage.component.scss"
 import SideBarRouter from './sidebarRouter';
