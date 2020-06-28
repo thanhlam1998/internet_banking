@@ -70,6 +70,9 @@ router.post("/login", authenLoginAdmin, async (req, res) => {
 /* POST request add partner_api to db */
 router.post('/add-partner', authenJWT, async (req, res) => {
   let result;
+
+  delete req.body["admin_id"];
+
   try {
     result = await partnerModel.add(req.body);
   } catch (err) { 
