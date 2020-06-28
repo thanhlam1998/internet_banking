@@ -2,6 +2,7 @@ import React from 'react';
 import './textInput.scss';
 
 const TextInput = (props) => {
+  
   return (
     <div className="row mt-3 textInput">
       <div className="col-3 align-self-center text-right">

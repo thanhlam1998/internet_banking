@@ -5,10 +5,28 @@ const initialState = {
   loggingIn: false,
   loginSuccess: false,
   loginError: null,
+
+  addCustomerPending: false,
+  addCustomerSuccess: false,
+  addCustomerError: null,
+
+  findCustomerPending: false,
+  findCustomerSuccess: false,
+  findCustomerError: null,
+
+  addMoneyToCustomerPending: false,
+  addMoneyToCustomerSuccess: false,
+  addMoneyToCustomerError: null,
+
+  findTransactionHistoryPending: false,
+  findTransactionHistorySuccess: false,
+  findTransactionHistoryError: null,
 };
 
 const employee = (state = initialState, action) => {
   switch (action.type) {
+
+/* ----------------------------- login employee ----------------------------- */
     case EmpConstants.LOGIN_REQUEST:
       return {
         loggingIn: true,
@@ -22,9 +40,9 @@ const employee = (state = initialState, action) => {
           action.payload.access_token
         );
         sessionStorage.setItem(
-            NameItem.REFRESH_TOKEN,
-            action.payload.refresh_token
-          );
+          NameItem.REFRESH_TOKEN,
+          action.payload.refresh_token
+        );
       }
       return {
         loggingIn: false,
@@ -37,11 +55,95 @@ const employee = (state = initialState, action) => {
         loginSuccess: false,
         loginError: action.payload,
       };
+
+/* ----------------------------- logout employee ---------------------------- */
     case EmpConstants.LOGOUT:
       sessionStorage.removeItem(NameItem.ACCESS_TOKEN);
-      sessionStorage.removeItem(NameItem.REFRESH_TOKEN)
+      sessionStorage.removeItem(NameItem.REFRESH_TOKEN);
       return {
         logout: true,
+      };
+
+/* ---------------------------- add new customer ---------------------------- */
+    case EmpConstants.ADD_CUSTOMER_PENDING:
+      return {
+        addCustomerPending: true,
+        addCustomerSuccess: false,
+        addCustomerError: null,
+      };
+    case EmpConstants.ADD_CUSTOMER_SUCCESS:
+      return {
+        addCustomerPending: false,
+        addCustomerSuccess: true,
+        addCustomerError: null,
+      };
+    case EmpConstants.ADD_CUSTOMER_ERROR:
+      return {
+        addCustomerPending: false,
+        addCustomerSuccess: false,
+        addCustomerError: action.payload,
+      };
+
+/* ------------------- find customer name by credit_number ------------------ */
+    case EmpConstants.FIND_CUSTOMER_PENDING:
+      return {
+        findCustomerPending: true,
+        findCustomerSuccess: false,
+        findCustomerError: null,
+      };
+    case EmpConstants.FIND_CUSTOMER_SUCCESS:
+      return {
+        findCustomerPending: false,
+        findCustomerSuccess: true,
+        findCustomerError: null,
+        full_name: action.payload.lastname + ' ' + action.payload.firstname,
+      };
+    case EmpConstants.FIND_CUSTOMER_ERROR:
+      return {
+        findCustomerPending: false,
+        findCustomerSuccess: false,
+        findCustomerError: action.payload,
+      };
+
+/* --------------------- add money to customer acccount --------------------- */
+    case EmpConstants.ADD_MONEY_TO_CUSTOMER_PENDING:
+      return {
+        addMoneyToCustomerPending: true,
+        addMoneyToCustomerSuccess: false,
+        addMoneyToCustomerError: null,
+      };
+    case EmpConstants.ADD_MONEY_TO_CUSTOMER_SUCCESS:
+      return {
+        addMoneyToCustomerPending: false,
+        addMoneyToCustomerSuccess: true,
+        addMoneyToCustomerError: null,
+      };
+    case EmpConstants.ADD_MONEY_TO_CUSTOMER_ERROR:
+      return {
+        addMoneyToCustomerPending: false,
+        addMoneyToCustomerSuccess: false,
+        addMoneyToCustomerError: action.payload,
+      };
+
+/* ------------------ find transaction history of customer ------------------ */
+      case EmpConstants.FIND_TRANSACTION_HISTORY_PENDING:
+      return {
+        findTransactionHistoryPending: true,
+        findTransactionHistorySuccess: false,
+        findTransactionHistoryError: null,
+      };
+    case EmpConstants.FIND_TRANSACTION_HISTORY_SUCCESS:
+      return {
+        findTransactionHistoryPending: false,
+        findTransactionHistorySuccess: true,
+        findTransactionHistoryError: null,
+        transactionHistory: action.payload
+      };
+    case EmpConstants.FIND_TRANSACTION_HISTORY_ERROR:
+      return {
+        findTransactionHistoryPending: false,
+        findTransactionHistorySuccess: false,
+        findTransactionHistoryError: action.payload,
       };
     default:
       return state;

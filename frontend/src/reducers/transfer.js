@@ -25,6 +25,8 @@ const initialState = {
 
 const transfer = (state = initialState, action) => {
   switch (action.type) {
+
+/* --------------------- find receiver by credit_number --------------------- */
     case TransferConstants.FIND_RECEIVER_PENDING:
       return {
         findReceiverPending: true,
@@ -45,6 +47,7 @@ const transfer = (state = initialState, action) => {
         findReceiverError: action.payload,
       };
 
+/* --------------------------- get the remind list -------------------------- */
     case TransferConstants.GET_REMIND_LIST_PENDING:
       return {
         getRemindListPending: true,
@@ -65,6 +68,7 @@ const transfer = (state = initialState, action) => {
         getRemindListError: action.payload,
       };
 
+/* ----------------------------- transfer local ----------------------------- */
     case TransferConstants.TRANSFER_LOCAL_PENDING:
       return {
         transferLocalPending: true,
@@ -86,6 +90,7 @@ const transfer = (state = initialState, action) => {
         transferLocalError: action.payload,
       };
 
+/* -------------------------------- send OTP -------------------------------- */
     case TransferConstants.OTP_PENDING:
       return {
         verifyOtpPending: true,
@@ -105,6 +110,7 @@ const transfer = (state = initialState, action) => {
         verifyOtpError: action.payload,
       };
 
+/* -------------------- save the customer to remind list -------------------- */
     case TransferConstants.SAVE_REMIND_LIST_PENDING:
       return {
         saveRemindListPending: true,
@@ -116,6 +122,7 @@ const transfer = (state = initialState, action) => {
         saveRemindListPending: false,
         saveRemindListSuccess: true,
         saveRemindListError: null,
+        transactionHistory: action.payload
       };
     case TransferConstants.SAVE_REMIND_LIST_ERROR:
       return {
