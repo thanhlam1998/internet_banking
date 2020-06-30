@@ -42,6 +42,7 @@
     - [Ngân hàng đại diện nhóm lẻ (RSA)](#ngân-hàng-đại-diện-nhóm-lẻ-rsa)
       - [Cách sử dụng api của ngân hàng RSA](#cách-sử-dụng-api-của-ngân-hàng-rsa)
         - [Lấy thông tin tài khoản khách hàng bằng số tài khoản](#lấy-thông-tin-tài-khoản-khách-hàng-bằng-số-tài-khoản-rsa)
+        - [Nạp tiền vào tài khoản](#nạp-tiền-vào-tài-khoản-rsa)
   - [Docker và Kubernetes](#docker-và-kubernetes)
     - [Môi trường lập trình local](#môi-trường-lập-trình-local)
     - [Deploy lên Kubernetes cluster trên Google Cloud](#deploy-lên-kubernetes-cluster-trên-google-cloud)
@@ -877,6 +878,29 @@ HEADER
 - ts là thời điểm gởi request, format sử dụng unix utc second, có thể  xem ở <https://www.epochconverter.com/,> lưu ý timestamp không được **lớn hơn** hoặc nhỏ hơn quá **60**s so với thời gian thực
 - sig là chuỗi hash sha256 của **timestamp+ ":" + JSON.stringify(body) + ":" + secret**, nếu body empty thì là **{}**,sau đó được encode base64 lại và gửi đi, ví dụ ở trên
 - Không yêu cầu **authen-sig**
+
+#### Nạp tiền vào tài khoản rsa
+
+```json
+POST /api/partner-bank/add-money
+
+HEADER
+"id": "kianto"
+"ts": 1593447476.9
+"sig": "84671fa6b7b1e3c70ff1ecb5535ea8118871a9d6"
+"verify": "bFxJPP9mZydi6bhUoHhgP25VlaZ+c38IKGXSxHIbcCdIZVKeOcEWU/cwLR2qWeP7QxGn+sRQtDkol1X5TTPfLzHSaUKZTreLJN3CoGho36UBpw+42mZxwAJlcODcH5yLETrC9WqFMJ6zRWCLR5+y4RgCeVzBt97vfObwjsStge0="
+
+BODY
+{"number":"6","money":"1000","username":"test","content":"abc"}
+```
+- username là tên hoặc username của người gửi
+- verify là chuỗi signature lấy dữ liệu là **secretKey = "Tj0xYDEDiQF9f2GYCxSv"** được sign theo package của node-rsa như sau
+```
+const NodeRSA = require('node-rsa');
+const privateKey = new NodeRSA(privateKeyRSA);
+const sig = privateKey.sign(secretKey, 'base64', 'base64');
+```
+  
 
 ## Docker và Kubernetes
 
