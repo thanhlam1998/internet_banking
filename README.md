@@ -40,6 +40,8 @@
   - [Danh sách các ngân hàng  liên  kết](#danh-sách-các-ngân-hàng-liên-kết)
     - [Ngân hàng đại diện nhóm chẵn (PGP)](#ngân-hàng-đại-diện-nhóm-chẵn-pgp)
     - [Ngân hàng đại diện nhóm lẻ (RSA)](#ngân-hàng-đại-diện-nhóm-lẻ-rsa)
+      - [Cách sử dụng api của ngân hàng RSA](#cách-sử-dụng-api-của-ngân-hàng-rsa)
+        - [Lấy thông tin tài khoản khách hàng bằng số tài khoản](#lấy-thông-tin-tài-khoản-khách-hàng-bằng-số-tài-khoản-rsa)
   - [Docker và Kubernetes](#docker-và-kubernetes)
     - [Môi trường lập trình local](#môi-trường-lập-trình-local)
     - [Deploy lên Kubernetes cluster trên Google Cloud](#deploy-lên-kubernetes-cluster-trên-google-cloud)
@@ -856,6 +858,25 @@ bankdbb
 ```html
 Tj0xYDEDiQF9f2GYCxSv
 ```
+
+### Cách sử dụng api của ngân hàng RSA:
+
+#### Lấy thông tin tài khoản khách hàng bằng số tài khoản rsa
+
+```json
+GET /api/partner-bank/info/:number
+
+HEADER
+"id": "bankdbb"
+"ts": 1593093383
+"sig": "57b84de98f4f734690c98f9de2d0cc4d68f30948"
+
+```
+
+- id là chuỗi code để xác định partner nào đã đăng kí api
+- ts là thời điểm gởi request, format sử dụng unix utc second, có thể  xem ở <https://www.epochconverter.com/,> lưu ý timestamp không được **lớn hơn** hoặc nhỏ hơn quá **60**s so với thời gian thực
+- sig là chuỗi hash sha256 của **timestamp+ ":" + JSON.stringify(body) + ":" + secret**, nếu body empty thì là **{}**,sau đó được encode base64 lại và gửi đi, ví dụ ở trên
+- Không yêu cầu **authen-sig**
 
 ## Docker và Kubernetes
 
