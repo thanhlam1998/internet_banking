@@ -11,7 +11,7 @@ function getBankAccount(){
           dispatch(success(res))
         }
       ).catch(error => {
-        dispatch(failure(error.response.data))
+        dispatch(failure(error.response))
       }) 
     };
     function request(){ return{type: BankAccountConstants.BANK_ACCOUNT_PENDING}};
@@ -28,7 +28,7 @@ function getRemindList(){
         dispatch(success(res))
       }
     ).catch(error => {
-      dispatch(failure(error.response.data))
+      dispatch(failure(error.response))
     }) 
   };
   function request(){ return{type: BankAccountConstants.GET_REMIND_LIST_PENDING}};
@@ -45,7 +45,7 @@ function createRemindList(credit_number, remind_name, partner_code){
         dispatch(success(res))
       }
     ).catch(error => {
-      dispatch(failure(error.response.data))
+      dispatch(failure(error.response))
     }) 
   };
   function request(){ return{type: BankAccountConstants.CREATE_REMIND_LIST_PENDING}};
@@ -62,7 +62,7 @@ function deleteRemindList(remind_id){
         dispatch(success(res))
       }
     ).catch(error => {
-      dispatch(failure(error.response.data))
+      dispatch(failure(error.response))
     }) 
   };
   function request(){ return{type: BankAccountConstants.DELETE_REMIND_LIST_PENDING}};
@@ -79,7 +79,7 @@ function updateRemindList(remind_id, credit_number, remind_name, partner_code){
         dispatch(success(res))
       }
     ).catch(error => {
-      dispatch(failure(error.response.data))
+      dispatch(failure(error.response))
     }) 
   };
   function request(){ return{type: BankAccountConstants.UPDATE_REMIND_LIST_PENDING}};
@@ -96,7 +96,7 @@ function getTransactionHistory(){
         dispatch(success(res))
       }
     ).catch(error => {
-      dispatch(failure(error.response.data))
+      dispatch(failure(error.response))
     }) 
   };
   function request(){ return{type: BankAccountConstants.GET_TRANSACTION_HISTORY_PENDING}};
