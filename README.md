@@ -869,14 +869,22 @@ GET /api/partner-bank/info/:number
 
 HEADER
 "id": "bankdbb"
-"ts": 1593093383
-"sig": "57b84de98f4f734690c98f9de2d0cc4d68f30948"
+"ts": 1594529422
+"sig": "483b18c7f62eeefabf68db1a58cda22a52276e6f"
 
 ```
 
 - id là chuỗi code để xác định partner nào đã đăng kí api
 - ts là thời điểm gởi request, format sử dụng unix utc second, có thể  xem ở <https://www.epochconverter.com/,> lưu ý timestamp không được **lớn hơn** hoặc nhỏ hơn quá **60**s so với thời gian thực
-- sig là chuỗi hash sha256 của **timestamp+ ":" + JSON.stringify(body) + ":" + secret**, nếu body empty thì là **{}**,sau đó được encode base64 lại và gửi đi, ví dụ ở trên
+- sig là chuỗi hash sha1 của **timestamp+ ":" + JSON.stringify(body) + ":" + secret**, nếu body empty thì là **{}**,sau đó được encode hex lại và gửi đi, ví dụ ở trên
+- **secret** là ```bankdbb```
+```
+const crypto = require('crypto');
+
+const dataToHash = '1594529422:{}:bankdbb';
+let hashString = crypto.createHash('sha1').update(dataToHash).digest('hex');
+console.log(hashString);
+```
 - Không yêu cầu **authen-sig**
 
 #### Nạp tiền vào tài khoản rsa
