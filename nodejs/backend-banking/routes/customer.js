@@ -128,7 +128,7 @@ router.post("/login", authenLoginCustomer, async (req, res) => {
   res.status(200).json({ "access_token": accesstoken, "refresh_token": refreshtoken });
 })
 
-/* POST request local transfer */
+/* POST request transfer */
 router.post("/transfer-fund", authenJWT, async (req, res) => {
   let result;
   const customer_id = req.body["customer_id"];
