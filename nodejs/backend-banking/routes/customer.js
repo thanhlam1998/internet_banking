@@ -6,6 +6,7 @@ const otpModel = require('../models/transaction_otp.model');
 const resetPassOtpModel = require('../models/reset_password_otp.model');
 const transactionModel = require('../models/transaction.models');
 const remindListModel = require('../models/remind.model');
+const interbank_credit_info = require('../utils/partner/credit_info');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const randomstring = require('randomstring');
@@ -98,17 +99,29 @@ const verifyOTP = async (req, res, next) => {
 /* GET fullname of credit account owner */
 router.get("/get-credit-info", authenJWT, async (req, res) => {
   const credit_number = req.query["credit_number"];
+  const partner_code = req.query["partner_code"];
 
-  let result;
-  try {
-    result = await customerModel.searchByCreditNumber(credit_number);
-  } catch (err) {
-    res.status(401).json({ "err": err });
+  if (partner_code === "local" || !partner_code) {
+    let result;
+    try {
+      result = await customerModel.searchByCreditNumber(credit_number);
+    } catch (err) {
+      res.status(401).json({ "err": err });
+      return;
+    }
+    const creditInfo = result[0];
+
+    res.status(200).json({ "fullname": creditInfo["lastname"] + " " + creditInfo["firstname"] });
+    return;
+  } else {
+    const fullname = interbank_credit_info(credit_number, partner_code);
+    if (fullname === "") {
+      res.status(401).json({ "err": "not found" });
+      return;
+    }
+    res.status(200).json({ "fullname": fullname })
     return;
   }
-  const creditInfo = result[0];
-
-  res.status(200).json({ "firstname": creditInfo["firstname"], "lastname": creditInfo["lastname"] });
 })
 
 /* POST request login */
