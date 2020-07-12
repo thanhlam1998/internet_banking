@@ -851,16 +851,18 @@ PQYpPpk9tno/qlOcwwIDAQAB
 - Secrettext of partner:
 
 ```html
-bankdbb
+Tj0xYDEDiQF9f2GYCxSv
+```
+
+- Host address
+
+```html
+bankdbb.herokuapp.com
 ```
 
 - Secrettext of bank:
 
-```html
-Tj0xYDEDiQF9f2GYCxSv
-```
-
-### Cách sử dụng api của ngân hàng RSA:
+### Cách sử dụng api của ngân hàng RSA
 
 #### Lấy thông tin tài khoản khách hàng bằng số tài khoản rsa
 
@@ -893,15 +895,16 @@ HEADER
 BODY
 {"number":"6","money":"1000","username":"test","content":"abc"}
 ```
+
 - username là tên hoặc username của người gửi
 - verify là chuỗi signature lấy dữ liệu là **secretKey = "Tj0xYDEDiQF9f2GYCxSv"** được sign theo package của node-rsa như sau
-```
+
+```html
 const NodeRSA = require('node-rsa');
 const privateKey = new NodeRSA(privateKeyRSA);
 const sig = privateKey.sign(secretKey, 'base64', 'base64');
 ```
   
-
 ## Docker và Kubernetes
 
 ### Môi trường lập trình local
