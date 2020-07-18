@@ -845,7 +845,6 @@ MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCEUZJwvTYorustQY+F3iqhJe+M
 Iuvi11rlvK5C798WYRjvNkOlcfI3M6ixQf+fAJSnflOqCcoPp/RM0HgcywoTkNWK
 PQYpPpk9tno/qlOcwwIDAQAB
 -----END PUBLIC KEY-----
-
 ```
 
 - Secrettext of partner:
