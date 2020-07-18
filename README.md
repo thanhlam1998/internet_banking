@@ -961,7 +961,7 @@ Tự động deploy lên Kubernetes khi merge vào `master`
 ## Trang web hữu ích
 
 - Tạo signature <https://8gwifi.org/rsasignverifyfunctions.jsp>
-- utc timestamp <https://www.epochconverter.com/>
+- UTC timestamp <https://www.epochconverter.com/>
 - Hex to base64 <https://base64.guru/converter/encode/hex>
 - Beautify và minify json <https://codebeautify.org/jsonviewer>
 - Hash, encode decode <https://emn178.github.io/online-tools/sha256.html>
