@@ -1,8 +1,9 @@
 const config = require('../config');
 const https = require('follow-redirects').https;
 const crypto = require('crypto');
+const { rejects } = require('assert');
 
-const interbank_credit_info = async (credit_number, partner_code) => {
+const interbank_credit_info = (credit_number, partner_code) => {
   const options = {
     method: "GET",
     maxRedirects: 5
@@ -23,28 +24,26 @@ const interbank_credit_info = async (credit_number, partner_code) => {
         'ts': ts,
         'sig': hashString
       };
-      console.log(options)
 
-      var req = await https.request(options, function (res) {
-        var chunks = [];
+      return new Promise((resolve, reject) => {
+        var req = https.request(options, function (res) {
+          var chunks = '';
 
-        res.on("data", function (chunk) {
-          chunks.push(chunk);
-        });
+          res.on("data", function (chunk) {
+            chunks += chunk;
+          });
 
-        res.on("end", function (chunk) {
-          var body = Buffer.concat(chunks);
-          console.log(body.toString());
-        });
+          res.on("end", function (chunk) {
+            var body = JSON.parse(chunks);
+            resolve(body["data"][0]["username"]);
+          });
 
-        res.on("error", function (error) {
-          console.error(error);
-        });
+          res.on("error", function (error) {
+            reject(error);
+          });
 
-        retrn 
-      });
-
-      req.end();
+        }).end();
+      })
 
 
     default:

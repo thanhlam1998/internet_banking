@@ -7,6 +7,7 @@ const resetPassOtpModel = require('../models/reset_password_otp.model');
 const transactionModel = require('../models/transaction.models');
 const remindListModel = require('../models/remind.model');
 const interbank_credit_info = require('../utils/partner/credit_info');
+const interbank_transfer = require('../utils/partner/transfer');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const randomstring = require('randomstring');
@@ -114,8 +115,8 @@ router.get("/get-credit-info", authenJWT, async (req, res) => {
     res.status(200).json({ "fullname": creditInfo["lastname"] + " " + creditInfo["firstname"] });
     return;
   } else {
-    const fullname = interbank_credit_info(credit_number, partner_code);
-    if (fullname === "") {
+    const fullname = await interbank_credit_info(credit_number, partner_code);
+    if (!fullname) {
       res.status(401).json({ "err": "not found" });
       return;
     }
@@ -247,17 +248,28 @@ router.post("/verify-otp", authenJWT, verifyOTP, async (req, res) => {
     transfer_fee = config["local_transfer_fee"];
   } else {
     transfer_fee = config["interbank_transfer_fee"];
-    res.status(401).json({ "err": "chua ho tro tinh nang interbank nhe anh em" });
-    return;
   }
 
   if (fee_payer === "sender") {
     amount += transfer_fee;
   }
 
-  otpModel.updateTransactionStatus(transaction_id, "success");
+  if (partner_code !== "local") {
+
+    const name = await interbank_credit_info(to_credit_number, partner_code);
+    if (!name) {
+      res.status(401).json({ "err": "bank or creditnumber incorrect" });
+      return;
+    }
+    try {
+      const response = await interbank_transfer(to_credit_number, name, amount - transfer_fee, message, partner_code);
+    } catch (err) {
+      console.log(err)
+      return;
+    }
+  }
+
   creditAccountModel.withdraw(from_credit_number, amount);
-  creditAccountModel.deposit(to_credit_number, amount - transfer_fee);
   transactionModel.add_sent_to_history({
     credit_number: from_credit_number,
     to_credit_number: to_credit_number,
@@ -265,13 +277,17 @@ router.post("/verify-otp", authenJWT, verifyOTP, async (req, res) => {
     message: message,
     partner_code: partner_code
   })
-  transactionModel.add_receive_from_history({
-    credit_number: to_credit_number,
-    from_credit_number: from_credit_number,
-    amount: amount - transfer_fee,
-    message: message,
-    partner_code: partner_code
-  })
+  if (partner_code === "local") {
+    creditAccountModel.deposit(to_credit_number, amount - transfer_fee);
+    transactionModel.add_receive_from_history({
+      credit_number: to_credit_number,
+      from_credit_number: from_credit_number,
+      amount: amount - transfer_fee,
+      message: message,
+      partner_code: partner_code
+    })
+  }
+  otpModel.updateTransactionStatus(transaction_id, "success");
 
   res.status(200).json({ "msg": "transaction success" });
 
