@@ -42,7 +42,8 @@ const interbank_credit_info = (credit_number, partner_code) => {
             reject(error);
           });
 
-        }).end();
+        })
+        req.end();
       })
 
 

@@ -262,7 +262,11 @@ router.post("/verify-otp", authenJWT, verifyOTP, async (req, res) => {
       return;
     }
     try {
-      const response = await interbank_transfer(to_credit_number, name, amount - transfer_fee, message, partner_code);
+      const statusCode = await interbank_transfer(to_credit_number, name, amount - transfer_fee, message, partner_code);
+      if (statusCode !== 200) {
+        res.status(401).json({ "err": "transfer money failed" });
+        return;
+      }
     } catch (err) {
       console.log(err)
       return;

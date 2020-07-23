@@ -16,19 +16,20 @@ const interbank_transfer = (credit_number, username, amount, message, partner_co
     case "bankdbb":
       const postData = {
         number: credit_number,
-        money: amount,
+        money: amount.toString(),
         username: username,
         content: message
       }
+
+      const secretText = 'Tj0xYDEDiQF9f2GYCxSv';
       const data = JSON.stringify(postData);
-      const ts = Math.floor(Date.now() / 1000)
-      const dataToHash = ts + ":" + data + ":" + config.list_partner.bankbb.secret_text;
+      const ts = Math.floor(Date.now() / 1000);
+      const dataToHash = ts + ":" + data + ":" + secretText;
       const hashString = crypto.createHash('sha1').update(dataToHash).digest('hex');
 
-      const key = fs.readFileSync('./rsa-key-test/partner/rsa-test/linh.private.key');
-      const secretKey = 'Tj0xYDEDiQF9f2GYCxSv';
-      const privateKey = new nodeRSA(key);
-      const signature = privateKey.sign(secretKey, 'base64', 'base64');
+      const secretKey = fs.readFileSync('./rsa-key-test/partner/rsa-test/linh.private.key');
+      const privateKey = new nodeRSA(secretKey);
+      const signature = privateKey.sign(secretText, 'base64', 'base64');
 
       options.hostname = config.list_partner.bankbb.host
       options.path = '/api/partner-bank/add-money';
@@ -41,12 +42,8 @@ const interbank_transfer = (credit_number, username, amount, message, partner_co
         'Content-Length': data.length
       };
 
-      console.log(options.headers)
-      console.log(postData)
-
       return new Promise((resolve, reject) => {
         var req = https.request(options, function (res) {
-          console.log(res.statusCode)
           var chunks = '';
 
           res.on("data", function (chunk) {
@@ -54,15 +51,17 @@ const interbank_transfer = (credit_number, username, amount, message, partner_co
           });
 
           res.on("end", function (chunk) {
-            console.log(chunks)
-            resolve(chunks);
+            var body = JSON.parse(chunks);
+            resolve(body);
           });
 
           res.on("error", function (error) {
             reject(error);
           });
 
-        }).write(data).end();
+        })
+        req.write(data);
+        req.end();
       })
 
 
