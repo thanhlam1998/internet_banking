@@ -52,7 +52,7 @@ const interbank_transfer = (credit_number, username, amount, message, partner_co
 
           res.on("end", function (chunk) {
             var body = JSON.parse(chunks);
-            resolve(body);
+            resolve(res.statusCode);
           });
 
           res.on("error", function (error) {
