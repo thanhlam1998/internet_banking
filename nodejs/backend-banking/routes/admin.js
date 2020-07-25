@@ -75,8 +75,8 @@ router.post('/add-partner', authenJWT, async (req, res) => {
 
   try {
     result = await partnerModel.add(req.body);
-  } catch (err) { 
-    res.status(422).json({ "err": err});
+  } catch (err) {
+    res.status(422).json({ "err": err });
     return;
   }
 
@@ -108,45 +108,45 @@ router.post('/add-employee', authenJWT, async (req, res) => {
 })
 
 /* POST delete employee by ID */
-router.post('/delete-employee', authenJWT, async (req,res) => {
-    let result;
+router.post('/delete-employee', authenJWT, async (req, res) => {
+  let result;
 
-    try {
-        result = await employeeModel.deleteEmployeeByID(req.body["employee_id"]);
-    } catch (err) {
-        res.status(422).json({ "err": err });
-        return;
-    }
+  try {
+    result = await employeeModel.deleteEmployeeByID(req.body["employee_id"]);
+  } catch (err) {
+    res.status(422).json({ "err": err });
+    return;
+  }
 
-    res.status(201).json(result);
+  res.status(201).json(result);
 })
 
 /* POST update employee username */
-router.post('/update-employee-username', authenJWT, async (req,res) => {
-    let result;
+router.post('/update-employee-username', authenJWT, async (req, res) => {
+  let result;
 
-    try {
-        result = await employeeModel.updateUsername(req.body);
-    } catch (err) {
-        res.status(422).json({ "err": err });
-        return;
-    }
+  try {
+    result = await employeeModel.updateUsername(req.body);
+  } catch (err) {
+    res.status(422).json({ "err": err });
+    return;
+  }
 
-    res.status(201).json(result);
+  res.status(201).json(result);
 })
 
 /* POST update employee password */
-router.post('/update-employee-password', authenJWT, async (req,res) => {
-    let result;
+router.post('/update-employee-password', authenJWT, async (req, res) => {
+  let result;
 
-    try {
-        result = await employeeModel.updatePassword(req.body);
-    } catch (err) {
-        res.status(422).json({ "err": err });
-        return;
-    }
+  try {
+    result = await employeeModel.updatePassword(req.body);
+  } catch (err) {
+    res.status(422).json({ "err": err });
+    return;
+  }
 
-    res.status(201).json(result);
+  res.status(201).json(result);
 })
 
 /* GET request get employee list */
@@ -157,23 +157,28 @@ router.get("/employee-list", authenJWT, async (req, res) => {
 
 /* GET request get employee info */
 router.get("/get-employee-info", authenJWT, async (req, res) => {
-    let employee_info
+  let employee_info
 
-    try {
-        employee_info = await employeeModel.getEmployeeInfo(req.query.employee_id);
-    } catch (err) {
-        res.status(422).json({ "err": err });
-        return;
-    }
+  try {
+    employee_info = await employeeModel.getEmployeeInfo(req.query.employee_id);
+  } catch (err) {
+    res.status(422).json({ "err": err });
+    return;
+  }
 
-    console.log(employee_info.length);
+  console.log(employee_info.length);
 
-    if (employee_info.length > 0) {
-        res.status(200).json(employee_info);
-    }
-    else {
-        res.status(204).send();
-    }
+  if (employee_info.length > 0) {
+    res.status(200).json(employee_info);
+  }
+  else {
+    res.status(204).send();
+  }
+})
+
+/* GET request get list interbank transaction history */
+router.get("/get-interbank-transaction", authenJWT, async (req, res) => {
+  
 })
 
 module.exports = router;
