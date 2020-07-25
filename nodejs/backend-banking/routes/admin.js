@@ -178,7 +178,13 @@ router.get("/get-employee-info", authenJWT, async (req, res) => {
 
 /* GET request get list interbank transaction history */
 router.get("/get-interbank-transaction", authenJWT, async (req, res) => {
-  
+  let list_transaction
+  try {
+    list_transaction = await adminModel.getInterbankTransaction()
+  } catch (err) {
+    console.log(err)
+  }
+  res.status(200).json(list_transaction)
 })
 
 module.exports = router;
