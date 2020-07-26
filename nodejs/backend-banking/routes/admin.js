@@ -75,8 +75,8 @@ router.post('/add-partner', authenJWT, async (req, res) => {
 
   try {
     result = await partnerModel.add(req.body);
-  } catch (err) { 
-    res.status(422).json({ "err": err});
+  } catch (err) {
+    res.status(422).json({ "err": err });
     return;
   }
 
@@ -108,45 +108,45 @@ router.post('/add-employee', authenJWT, async (req, res) => {
 })
 
 /* POST delete employee by ID */
-router.post('/delete-employee', authenJWT, async (req,res) => {
-    let result;
+router.post('/delete-employee', authenJWT, async (req, res) => {
+  let result;
 
-    try {
-        result = await employeeModel.deleteEmployeeByID(req.body["employee_id"]);
-    } catch (err) {
-        res.status(422).json({ "err": err });
-        return;
-    }
+  try {
+    result = await employeeModel.deleteEmployeeByID(req.body["employee_id"]);
+  } catch (err) {
+    res.status(422).json({ "err": err });
+    return;
+  }
 
-    res.status(201).json(result);
+  res.status(201).json(result);
 })
 
 /* POST update employee username */
-router.post('/update-employee-username', authenJWT, async (req,res) => {
-    let result;
+router.post('/update-employee-username', authenJWT, async (req, res) => {
+  let result;
 
-    try {
-        result = await employeeModel.updateUsername(req.body);
-    } catch (err) {
-        res.status(422).json({ "err": err });
-        return;
-    }
+  try {
+    result = await employeeModel.updateUsername(req.body);
+  } catch (err) {
+    res.status(422).json({ "err": err });
+    return;
+  }
 
-    res.status(201).json(result);
+  res.status(201).json(result);
 })
 
 /* POST update employee password */
-router.post('/update-employee-password', authenJWT, async (req,res) => {
-    let result;
+router.post('/update-employee-password', authenJWT, async (req, res) => {
+  let result;
 
-    try {
-        result = await employeeModel.updatePassword(req.body);
-    } catch (err) {
-        res.status(422).json({ "err": err });
-        return;
-    }
+  try {
+    result = await employeeModel.updatePassword(req.body);
+  } catch (err) {
+    res.status(422).json({ "err": err });
+    return;
+  }
 
-    res.status(201).json(result);
+  res.status(201).json(result);
 })
 
 /* GET request get employee list */
@@ -157,23 +157,74 @@ router.get("/employee-list", authenJWT, async (req, res) => {
 
 /* GET request get employee info */
 router.get("/get-employee-info", authenJWT, async (req, res) => {
-    let employee_info
+  let employee_info
 
-    try {
-        employee_info = await employeeModel.getEmployeeInfo(req.query.employee_id);
-    } catch (err) {
-        res.status(422).json({ "err": err });
-        return;
-    }
+  try {
+    employee_info = await employeeModel.getEmployeeInfo(req.query.employee_id);
+  } catch (err) {
+    res.status(422).json({ "err": err });
+    return;
+  }
 
-    console.log(employee_info.length);
+  console.log(employee_info.length);
 
-    if (employee_info.length > 0) {
-        res.status(200).json(employee_info);
-    }
-    else {
-        res.status(204).send();
-    }
+  if (employee_info.length > 0) {
+    res.status(200).json(employee_info);
+  }
+  else {
+    res.status(204).send();
+  }
+})
+
+/* GET request get list interbank transaction history */
+router.get("/get-interbank-transaction", authenJWT, async (req, res) => {
+  let list_transaction
+  try {
+    list_transaction = await adminModel.getInterbankTransaction()
+  } catch (err) {
+    console.log(err)
+  }
+  res.status(200).json(list_transaction)
+})
+
+/* GET new jwt token, use refresh token */
+router.get("/refresh-jwt", async (req, res) => {
+  const refreshjwt = req.headers["refresh_token"];  // lấy chuỗi jwt từ request header
+  let result;
+  if (!refreshjwt) {
+    res.status(401).json({ "msg": "missing refresh_token" });
+    return;
+  }
+  const secret_text = config["secret_text"];  // lấy secret từ config
+
+  let decoded;
+  try {
+    decoded = await jwt.decode(refreshjwt);
+    /* decoded là cái jwt payload, một chuỗi jwt có 3 phần
+    (header, payload, signature) chỉ quan tâm cái payload thôi 
+    vì nó chứa thông tin mình cần, chẳng hạn như admin_id */
+  } catch (err) {
+    res.status(401).json({ "err": err }); // verify jwt fail, trả về lỗi (jwt expire chẳng hạn)
+  }
+
+  const accesstoken_exp = config["accesstoken_exp"];
+  const admin_id = decoded["admin_id"];
+  result = await adminModel.searchById(admin_id);
+  if (result.length == 0) {
+    res.status(400).json({ "msg": "invalid refresh token" });
+    return;
+  }
+  const admin = result[0]
+  try {
+    await jwt.verify(refreshjwt, admin.refresh_secret);
+  } catch (err) {
+    res.status(400).json(err);
+    return;
+  }
+
+  const accesstoken = jwt.sign({ admin_id: admin_id }, secret_text, { expiresIn: accesstoken_exp });
+
+  res.status(200).json({ "access_token": accesstoken });
 })
 
 module.exports = router;
