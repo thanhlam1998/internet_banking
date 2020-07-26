@@ -28,7 +28,11 @@
       - [Đăng Nhập](#đăng-nhập-1)
       - [Thêm thông tin khách hàng vào hệ thống](#thêm-thông-tin-khách-hàng-vào-hệ-thống)
       - [Thêm tài khoản tiết kiệm](#thêm-tài-khoản-tiết-kiệm)
+      - [Nạp tiền vào tài khoản khách hàng](#nạp-tiền-vào-tài-khoản-khách-hàng)
+      - [Liệt kê lịch sử giao dịch của một khách hàng nhất định](#liệt-kê-lịch-sử-giao-dịch-của-một-khách-hàng-nhất-định)
+      - [Tạo mới access_token cho employee](#tạo-mới-access_token-cho-employee)
     - [API dành cho admin](#api-dành-cho-admin)
+      - [Đăng Nhập](#đăng-nhập-2)
       - [Thêm thông tin partner vào hệ thống](#thêm-thông-tin-partner-vào-hệ-thống)
       - [Tạo tài khoản employee](#tạo-tài-khoản-employee)
       - [Xóa tài khoản employee](#xóa-tài-khoản-employee)
@@ -36,13 +40,15 @@
       - [Cập nhật password của employee](#cập-nhật-password-của-employee)
       - [Liệt kê danh sách employee](#liệt-kê-danh-sách-employee)
       - [Lấy thông tin employee thông qua ID](#lấy-thông-tin-employee-thông-qua-id)
+      - [Lấy lịch sử giao dịch với ngân hàng khác](#lấy-lịch-sử-giao-dịch-với-ngân-hàng-khác)
+      - [Tạo mới access_token cho admin](#tạo-mới-access_token-cho-admin)
   - [Một số thông tin mặc định được khởi tạo cùng với project, dùng để test api](#một-số-thông-tin-mặc-định-được-khởi-tạo-cùng-với-project-dùng-để-test-api)
   - [Danh sách các ngân hàng  liên  kết](#danh-sách-các-ngân-hàng-liên-kết)
     - [Ngân hàng đại diện nhóm chẵn (PGP)](#ngân-hàng-đại-diện-nhóm-chẵn-pgp)
     - [Ngân hàng đại diện nhóm lẻ (RSA)](#ngân-hàng-đại-diện-nhóm-lẻ-rsa)
-      - [Cách sử dụng api của ngân hàng RSA](#cách-sử-dụng-api-của-ngân-hàng-rsa)
-        - [Lấy thông tin tài khoản khách hàng bằng số tài khoản](#lấy-thông-tin-tài-khoản-khách-hàng-bằng-số-tài-khoản-rsa)
-        - [Nạp tiền vào tài khoản](#nạp-tiền-vào-tài-khoản-rsa)
+    - [Cách sử dụng api của ngân hàng RSA](#cách-sử-dụng-api-của-ngân-hàng-rsa)
+      - [Lấy thông tin tài khoản khách hàng bằng số tài khoản rsa](#lấy-thông-tin-tài-khoản-khách-hàng-bằng-số-tài-khoản-rsa)
+      - [Nạp tiền vào tài khoản rsa](#nạp-tiền-vào-tài-khoản-rsa)
   - [Docker và Kubernetes](#docker-và-kubernetes)
     - [Môi trường lập trình local](#môi-trường-lập-trình-local)
     - [Deploy lên Kubernetes cluster trên Google Cloud](#deploy-lên-kubernetes-cluster-trên-google-cloud)
@@ -431,6 +437,15 @@ HEADER
 "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6MSwiaWF0IjoxNTkyNzI0OTYyLCJleHAiOjE1OTI3MzA5NjJ9.TQKAStKk_XbFc3kNmGFP4kkXaXYzNl1LjkrGpuWn9co"
 ```
 
+#### Tạo mới access_token cho employee
+
+```json
+GET /api/employee/refresh-jwt
+
+HEADER
+"refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZV9pZCI6MSwiaWF0IjoxNTk1NzI4MzU1LCJleHAiOjE1OTgzMjAzNTV9.-WKjHKpq_ZeSifKT7AX_dzyLvmdZDeFKqWPBEHuyqz4"
+```
+
 ### API dành cho admin
 
 #### Đăng Nhập
@@ -579,6 +594,25 @@ Hệ thống sẽ trả về thông tin của employee duới dạng JSON, ví d
     "refresh_secret": "rQFn3MSsYZN2UzK8idJv"
   }
 ]
+```
+
+#### Lấy lịch sử giao dịch với ngân hàng khác
+
+```json
+GET /api/admin/get-interbank-transaction
+
+HEADER
+"access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6MSwiaWF0IjoxNTk1Njg3ODU4LCJleHAiOjE1OTU2OTM4NTh9._oPBPuPHot9dIgT7G8OonycB9rKLxfdA6Y8XuIVeUjY"
+
+```
+
+#### Tạo mới access_token cho admin
+
+```json
+GET /api/admin/refresh-jwt
+
+HEADER
+"refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6MSwiaWF0IjoxNTk1NzI3Nzk3LCJleHAiOjE1OTgzMTk3OTd9.370YsMDL7s6qLV9m9Qwx8FodfS_XDu8TzGHW2N2x4Ro"
 ```
 
 ## Một số thông tin mặc định được khởi tạo cùng với project, dùng để test api
@@ -879,6 +913,7 @@ HEADER
 - ts là thời điểm gởi request, format sử dụng unix utc second, có thể  xem ở <https://www.epochconverter.com/,> lưu ý timestamp không được **lớn hơn** hoặc nhỏ hơn quá **60**s so với thời gian thực
 - sig là chuỗi hash sha1 của **timestamp+ ":" + JSON.stringify(body) + ":" + secret**, nếu body empty thì là **{}**,sau đó được encode hex lại và gửi đi, ví dụ ở trên
 - **secret** là ```bankdbb```
+
 ```
 const crypto = require('crypto');
 
@@ -886,6 +921,7 @@ const dataToHash = '1594529422:{}:bankdbb';
 let hashString = crypto.createHash('sha1').update(dataToHash).digest('hex');
 console.log(hashString);
 ```
+
 - Không yêu cầu **authen-sig**
 
 #### Nạp tiền vào tài khoản rsa
