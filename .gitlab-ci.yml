@@ -3,6 +3,7 @@ services:
   - docker:dind
 
 stages:
+  - provision
   - build
   - deploy
 
@@ -12,6 +13,20 @@ variables:
 before_script:
   - docker login -u "khuedoan" -p "$DOCKER_PASSWORD"
 
+provision:
+  stage: provision
+  image:
+    name: hashicorp/terraform:latest
+    entrypoint: ["/bin/sh", "-c"]
+  before_script:
+    - cd ./terraform/
+  script:
+    - terraform init
+    - terraform validate
+    - terraform destroy -auto-approve
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+
 build:
   stage: build
   script:
@@ -19,8 +34,8 @@ build:
     - docker push khuedoan/node-kubernetes
     - docker build -t khuedoan/bank-frontend-kubernetes frontend
     - docker push khuedoan/bank-frontend-kubernetes
-  only:
-    - master
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
 
 .gcloud: &gcloud
   - echo $GCLOUD_SERVICE_KEY | base64 --decode -i > ~/gcloud-service-key.json
@@ -39,5 +54,5 @@ build:
 
 auto-deploy-master:
   <<: *prod_deploy
-  only:
-    - master
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
