@@ -15,7 +15,7 @@ config["interbank_transfer_fee"] = 5000;
 config["list_partner"] = {
   "bankbb": {
     "host": "bankdbb.herokuapp.com",
-    "secret_text": "Tj0xYDEDiQF9f2GYCxSv"
+    "secret_text": "bankdbb"
   },
   "NaniBank": {
     "host": "35.240.195.17",
