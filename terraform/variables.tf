@@ -1,5 +1,5 @@
 variable "project_id" {
-  default     = "internet-284814 "
+  default     = "internet-284814"
 }
 
 variable "cluster_name" {

@@ -23,7 +23,7 @@ provision:
   script:
     - terraform init
     - terraform validate
-    - terraform destroy -auto-approve
+    - terraform apply -auto-approve
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
 
