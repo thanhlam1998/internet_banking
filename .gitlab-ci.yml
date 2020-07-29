@@ -27,10 +27,8 @@ build:
   script:
     - docker build --pull -t "$DOCKER_USERNAME/node-kubernetes:$CI_COMMIT_SHORT_SHA" nodejs
     - docker push "$DOCKER_USERNAME/node-kubernetes:$CI_COMMIT_SHORT_SHA" 
-    - docker push "$DOCKER_USERNAME/node-kubernetes:latest" 
     - docker build --pull -t "$DOCKER_USERNAME/bank-frontend-kubernetes:$CI_COMMIT_SHORT_SHA" frontend
     - docker push "$DOCKER_USERNAME/bank-frontend-kubernetes:$CI_COMMIT_SHORT_SHA" 
-    - docker push "$DOCKER_USERNAME/bank-frontend-kubernetes:latest" 
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
 
