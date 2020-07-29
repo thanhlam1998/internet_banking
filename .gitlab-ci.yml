@@ -1,17 +1,7 @@
-image: docker:latest
-services:
-  - docker:dind
-
 stages:
   - provision
   - build
   - deploy
-
-variables:
-  DOCKER_DRIVER: overlay2
-
-before_script:
-  - docker login -u "khuedoan" -p "$DOCKER_PASSWORD"
 
 provision:
   stage: provision
@@ -29,11 +19,16 @@ provision:
 
 build:
   stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
   script:
-    - docker build -t khuedoan/node-kubernetes nodejs
-    - docker push khuedoan/node-kubernetes
-    - docker build -t khuedoan/bank-frontend-kubernetes frontend
-    - docker push khuedoan/bank-frontend-kubernetes
+    - docker build --pull -t "$DOCKER_USERNAME/node-kubernetes:$CI_COMMIT_SHORT_SHA" nodejs
+    - docker push "$DOCKER_USERNAME/node-kubernetes:$CI_COMMIT_SHORT_SHA" 
+    - docker build --pull -t "$DOCKER_USERNAME/bank-frontend-kubernetes:$CI_COMMIT_SHORT_SHA" frontend
+    - docker push "$DOCKER_USERNAME/bank-frontend-kubernetes:$CI_COMMIT_SHORT_SHA" 
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
 
