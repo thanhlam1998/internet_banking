@@ -34,8 +34,8 @@ build:
     - docker push khuedoan/node-kubernetes
     - docker build -t khuedoan/bank-frontend-kubernetes frontend
     - docker push khuedoan/bank-frontend-kubernetes
-  only:
-    - master
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
 
 .gcloud: &gcloud
   - echo $GCLOUD_SERVICE_KEY | base64 --decode -i > ~/gcloud-service-key.json
@@ -54,5 +54,5 @@ build:
 
 auto-deploy-master:
   <<: *prod_deploy
-  only:
-    - master
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
