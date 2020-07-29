@@ -1,17 +1,7 @@
-image: docker:latest
-services:
-  - docker:dind
-
 stages:
   - provision
   - build
   - deploy
-
-variables:
-  DOCKER_DRIVER: overlay2
-
-before_script:
-  - docker login -u "khuedoan" -p "$DOCKER_PASSWORD"
 
 provision:
   stage: provision
@@ -29,30 +19,32 @@ provision:
 
 build:
   stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
   script:
-    - docker build -t khuedoan/node-kubernetes nodejs
-    - docker push khuedoan/node-kubernetes
-    - docker build -t khuedoan/bank-frontend-kubernetes frontend
-    - docker push khuedoan/bank-frontend-kubernetes
+    - docker build --pull -t "$DOCKER_USERNAME/node-kubernetes:$CI_COMMIT_SHORT_SHA" nodejs
+    - docker push "$DOCKER_USERNAME/node-kubernetes:$CI_COMMIT_SHORT_SHA" 
+    - docker push "$DOCKER_USERNAME/node-kubernetes:latest" 
+    - docker build --pull -t "$DOCKER_USERNAME/bank-frontend-kubernetes:$CI_COMMIT_SHORT_SHA" frontend
+    - docker push "$DOCKER_USERNAME/bank-frontend-kubernetes:$CI_COMMIT_SHORT_SHA" 
+    - docker push "$DOCKER_USERNAME/bank-frontend-kubernetes:latest" 
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
 
-.gcloud: &gcloud
-  - echo $GCLOUD_SERVICE_KEY | base64 --decode -i > ~/gcloud-service-key.json
-  - gcloud auth activate-service-account --key-file ~/gcloud-service-key.json
-  - gcloud --quiet container clusters get-credentials $CLOUDSDK_CONTAINER_CLUSTER
-
-.prod_deploy: &prod_deploy
-  image: google/cloud-sdk
+deploy_staging:
   stage: deploy
-  environment: production
-  before_script: *gcloud
+  image: google/cloud-sdk:alpine
+  before_script:
+    - gcloud auth activate-service-account --key-file=$GCLOUD_SERVICE_KEY
+    - gcloud config set project $GCLOUD_PROJECT
+    - gcloud container clusters get-credentials $CLOUDSDK_CONTAINER_CLUSTER
+    - gcloud components install kubectl
+    - sed -i "s/\#VERSION\#/$CI_COMMIT_SHORT_SHA/g" ./kubernetes/nodejs-deployment.yaml
+    - sed -i "s/\#VERSION\#/$CI_COMMIT_SHORT_SHA/g" ./kubernetes/frontend-deployment.yml
   script:
-    - kubectl apply -f kubernetes
-    - kubectl patch deployment nodejs -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"date\":\"`date +'%s'`\"}}}}}"
-    - kubectl patch deployment frontend -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"date\":\"`date +'%s'`\"}}}}}"
-
-auto-deploy-master:
-  <<: *prod_deploy
+    - kubectl apply -f ./kubernetes/
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'

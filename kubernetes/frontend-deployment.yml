@@ -24,7 +24,7 @@ spec:
         io.kompose.service: frontend
     spec:
       containers:
-      - image: khuedoan/bank-frontend-kubernetes:latest
+      - image: khuedoan/bank-frontend-kubernetes:#VERSION#
         imagePullPolicy: Always
         name: frontend
         ports:
