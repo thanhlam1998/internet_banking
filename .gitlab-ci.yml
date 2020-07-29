@@ -32,22 +32,17 @@ build:
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
 
-.gcloud: &gcloud
-  - echo $GCLOUD_SERVICE_KEY | base64 --decode -i > ~/gcloud-service-key.json
-  - gcloud auth activate-service-account --key-file ~/gcloud-service-key.json
-  - gcloud --quiet container clusters get-credentials $CLOUDSDK_CONTAINER_CLUSTER
-
-.prod_deploy: &prod_deploy
-  image: google/cloud-sdk
+deploy_staging:
   stage: deploy
-  environment: production
-  before_script: *gcloud
+  image: google/cloud-sdk:alpine
+  before_script:
+    - gcloud auth activate-service-account --key-file=$GCLOUD_SERVICE_KEY
+    - gcloud config set project $GCLOUD_PROJECT
+    - gcloud container clusters get-credentials $CLOUDSDK_CONTAINER_CLUSTER
+    - gcloud components install kubectl
+    - sed -i "s/\#VERSION\#/$CI_COMMIT_SHORT_SHA/g" ./kubernetes/nodejs-deployment.yaml
+    - sed -i "s/\#VERSION\#/$CI_COMMIT_SHORT_SHA/g" ./kubernetes/frontend-deployment.yml
   script:
-    - kubectl apply -f kubernetes
-    - kubectl patch deployment nodejs -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"date\":\"`date +'%s'`\"}}}}}"
-    - kubectl patch deployment frontend -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"date\":\"`date +'%s'`\"}}}}}"
-
-auto-deploy-master:
-  <<: *prod_deploy
+    - kubectl apply -f ./kubernetes/
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
