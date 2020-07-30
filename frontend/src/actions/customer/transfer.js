@@ -36,10 +36,10 @@ function verifyOtp(id, otp){
     function failure(error){return{type: TransferConstants.OTP_ERROR, payload: error}};
 };
 
-function findReceiver(credit_number){
+function findReceiver(credit_number, partner_code="local"){
   return (dispatch) => {
     dispatch(request());
-    TransferServices.findReceiver(credit_number)
+    TransferServices.findReceiver(credit_number, partner_code)
     .then(
       res =>{
         dispatch(success(res))

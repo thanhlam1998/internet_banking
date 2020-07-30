@@ -56,12 +56,13 @@ const verifyOtp = (id, otp) => {
     });
 };
 
-const findReceiver = (credit_number) => {
+const findReceiver = (credit_number, partner_code="local") => {
   const token = sessionStorage.getItem(NameItem.ACCESS_TOKEN);
   let config ={
     headers: {access_token: token},
     params: {
-      credit_number: credit_number
+      credit_number: credit_number,
+      partner_code: partner_code
     },
   }
   return axios.get(

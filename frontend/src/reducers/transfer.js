@@ -38,7 +38,7 @@ const transfer = (state = initialState, action) => {
         findReceiverPending: false,
         findReceiverSuccess: true,
         findReceiverError: null,
-        full_name: action.payload.lastname + ' ' + action.payload.firstname,
+        full_name: action.payload.fullname,
       };
     case TransferConstants.FIND_RECEIVER_ERROR:
       return {

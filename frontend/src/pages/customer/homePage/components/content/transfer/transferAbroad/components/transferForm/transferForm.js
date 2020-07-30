@@ -25,6 +25,16 @@ const TransferForm = (props) => {
   const banks = partnerBank.map(item => item.name)
 
   useEffect(() => {
+    props.setTenNganHang(banks[0])
+  }, [])
+
+  const handleOnChangeBank = () => {
+    if(props.soTaiKhoan) {
+      props.findReceiver(props.soTaiKhoan, props.tenNganHang.toLowerCase())
+    }
+  }
+
+  useEffect(() => {
     if (props.transfer.findReceiverError && props.soTaiKhoan) {
       NotificationManager.error('Không tìm thấy tài khoản thẻ');
     }
@@ -108,12 +118,20 @@ const TransferForm = (props) => {
           title="Số tài khoản"
           placeholder="Nhập số tài khoản"
           value={props.soTaiKhoan || ''}
-          onBlur={() => props.findReceiver(props.soTaiKhoan)}
+          onBlur={() => props.findReceiver(props.soTaiKhoan, props.tenNganHang.toLowerCase())}
           onChange={(e) => props.setSoTaiKhoan(e.target.value)}
+        />
+        <TextInput
+          title="Tên người hưởng"
+          placeholder="Tên người huởng"
+          value={props.tenNguoiHuong || ''}
+          disabled={true}
         />
         <SelectInput
           title ="Ngân hàng"
           placeholder= "Chọn ngân hàng"
+          onChange={e => props.setTenNganHang(e.target.value)}
+          onBlur = {handleOnChangeBank}
           items={banks}/>
         <CheckBox
           label="Lưu thông tin người hưởng"
@@ -152,8 +170,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  findReceiver: (credit_number) =>
-    dispatch(transferActions.findReceiver(credit_number)),
+  findReceiver: (credit_number, partner_code) =>
+    dispatch(transferActions.findReceiver(credit_number, partner_code)),
   transferLocal: (
     name,
     from_credit_number,
