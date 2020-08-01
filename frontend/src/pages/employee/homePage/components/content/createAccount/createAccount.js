@@ -89,6 +89,9 @@ const CreateAccount = ({employee, addCustomer}) => {
   useEffect(() => {
     if(employee.addCustomerSuccess === true){
       NotificationManager.success('Thêm tài khoản thành công');
+      setTimeout(function(){
+        window.location.reload();
+      }, 2000)
     }
     if(employee.addCustomerError){
       NotificationManager.error('Có lỗi xảy ra, vui lòng thử lại');

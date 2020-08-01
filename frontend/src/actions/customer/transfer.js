@@ -19,6 +19,23 @@ function transferLocal(name, from_credit_number, to_credit_number, amount, fee_p
     function failure(error){return{type: TransferConstants.TRANSFER_LOCAL_ERROR, payload: error}};
 };
 
+function transferInter(name, from_credit_number, to_credit_number, amount, fee_payer, partner_code, message){
+  return (dispatch) => {
+    dispatch(request());
+    TransferServices.transferInter(name, from_credit_number, to_credit_number, amount, fee_payer, partner_code, message)
+    .then(
+      res =>{
+        dispatch(success(res))
+      }
+      ).catch(error => {
+        dispatch(failure(error.response))
+      }) 
+    };
+    function request(){ return{type: TransferConstants.TRANSFER_INTER_PENDING}};
+    function success(res){return{type: TransferConstants.TRANSFER_INTER_SUCCESS, payload: res}};
+    function failure(error){return{type: TransferConstants.TRANSFER_LOCAL_ERROR, payload: error}};
+};
+
 function verifyOtp(id, otp){
   return (dispatch) => {
     dispatch(request());
@@ -91,6 +108,7 @@ function saveRemindList(credit_number, remind_name, bank_name){
 
 export const transferActions = {
   transferLocal,
+  transferInter,
   verifyOtp,
   findReceiver,
   getRemindList,

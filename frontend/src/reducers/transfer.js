@@ -14,6 +14,10 @@ const initialState = {
   transferLocalError: null,
   onChangedState: false,
 
+  transferInterPending: false,
+  transferInterSuccess: false,
+  transferInterError: null,
+
   verifyOtpPending: false,
   verifyOtpSuccess: false,
   verifyOtpError: null,
@@ -88,6 +92,29 @@ const transfer = (state = initialState, action) => {
         transferLocalPending: false,
         transferLocalSuccess: false,
         transferLocalError: action.payload,
+      };
+
+/* ----------------------------- transfer inter ----------------------------- */
+    case TransferConstants.TRANSFER_INTER_PENDING:
+      return {
+        transferInterPending: true,
+        transferInterSuccess: false,
+        transferInterError: null,
+        onChangedState: false,
+      };
+    case TransferConstants.TRANSFER_INTER_SUCCESS:
+      return {
+        transferInterPending: false,
+        transferInterSuccess: true,
+        transferInterError: null,
+        onChangedState: true,
+        transactionId: action.payload.transaction_id,
+      };
+    case TransferConstants.TRANSFER_INTER_ERROR:
+      return {
+        transferInterPending: false,
+        transferInterSuccess: false,
+        transferInterError: action.payload,
       };
 
 /* -------------------------------- send OTP -------------------------------- */
