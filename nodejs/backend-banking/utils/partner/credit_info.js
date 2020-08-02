@@ -10,9 +10,9 @@ const interbank_credit_info = (credit_number, partner_code) => {
   };
 
   switch (partner_code) {
-    case "NaniBank":
+    case "NaniBank": { }
 
-    case "bankdbb":
+    case "bankdbb": {
       const ts = Math.floor(Date.now() / 1000)
       const dataToHash = ts + ":" + "{}" + ":" + config.list_partner.bankbb.secret_text;
       let hashString = crypto.createHash('sha1').update(dataToHash).digest('hex');
@@ -27,6 +27,10 @@ const interbank_credit_info = (credit_number, partner_code) => {
 
       return new Promise((resolve, reject) => {
         var req = https.request(options, function (res) {
+          if (res.statusCode != 200) {
+            return undefined;
+          }
+
           var chunks = '';
 
           res.on("data", function (chunk) {
@@ -45,7 +49,51 @@ const interbank_credit_info = (credit_number, partner_code) => {
         })
         req.end();
       })
+    }
 
+    case "N42": {
+      const bankname = "N42";
+      const ts = Math.floor(Date.now() / 1000);
+      const dataToHash = ts + config.list_partner[bankname].secret_text;
+      let hashString = crypto.createHash('sha256').update(dataToHash).digest('hex');
+
+      options.hostname = config.list_partner[bankname].host
+      options.path = `/api/interbank/get-account-info?number=${credit_number}`;
+      options.headers = {
+        'code': config.list_partner[bankname].code,
+        'request-time': ts,
+        'auth-hash': hashString
+      };
+
+      return new Promise((resolve, reject) => {
+        var req = https.request(options, function (res) {
+
+          var chunks = '';
+
+          res.on("data", function (chunk) {
+            chunks += chunk;
+          });
+
+          res.on("end", function (chunk) {
+            var body = JSON.parse(chunks);
+
+            if (res.statusCode != 200) {
+              console.log(body);
+              resolve(undefined);
+              return;
+            }
+
+            resolve(body["data"]["fullName"]);
+          });
+
+          res.on("error", function (error) {
+            reject(error);
+          });
+
+        })
+        req.end();
+      })
+    }
 
     default:
       break;
