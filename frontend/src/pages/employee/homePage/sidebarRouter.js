@@ -9,12 +9,11 @@ const SidebarRouter = () => {
     const match = useRouteMatch();
     return (
         <Switch>
-            <Redirect exact from={`${match.path}`}  to={`${match.path}/addCustomer`}/>}/>
+            <Redirect exact from={`${match.path}`}  to={`${match.path}/addCustomer`}/>
             <PrivateRoute exact path={`${match.path}/addCustomer`} component={CreateAccount} page="/employee"/>
             <PrivateRoute exact path={`${match.path}/addMoney`} component={addMoneyToAccount} page="/employee"/>
             <PrivateRoute exact path={`${match.path}/history`} component={TransactionHistory} page="/employee"/>
             <Route exact path={`${match.url}/logout`} render={() => {(window.location = window.location.origin + "/employee")}}/>
-            />
         </Switch>
     )
 }
