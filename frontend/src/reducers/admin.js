@@ -136,6 +136,26 @@ const admin = (state = initialState, action) => {
           deleteEmployeeSuccess: false,
           deleteEmployeeError: action.payload,
         }
+
+      case AdminConstants.GET_TRANSACTION_LIST_PENDING:
+        return {
+          getTransactionListPending: true,
+          getTransactionListSuccess: false,
+          getTransactionListError: null,
+        }
+      case AdminConstants.GET_TRANSACTION_LIST_SUCCESS:
+        return {
+          getTransactionListPending: false,
+          getTransactionListSuccess: true,
+          transactionList: action.payload,
+          getTransactionListError: null,
+        }
+      case AdminConstants.GET_TRANSACTION_LIST_ERROR:
+        return {
+          getTransactionListPending: false,
+          getTransactionListSuccess: false,
+          getTransactionListError: action.payload,
+        }
     default:
       return state;
   }

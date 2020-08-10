@@ -6,7 +6,6 @@ import PrivateRoute from '../../../PrivateRoute'
 
 const SidebarRouter = () => {
     const match = useRouteMatch();
-    console.log(match.url+'/transaction')
     return (
         <Switch>
             <PrivateRoute exact path={`${match.path}`} component={EmployeeList} page="/admin"/>
