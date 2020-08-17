@@ -104,6 +104,72 @@ function getTransactionHistory(){
   function failure(error){return{type: BankAccountConstants.GET_TRANSACTION_HISTORY_ERROR, payload: error}};
 };
 
+/* -------------------------------- add debt -------------------------------- */
+function addDebt(credit_number, amount, content=""){
+  return (dispatch) => {
+    dispatch(request());
+    BankAccountServices.addDebt(credit_number, amount, content)
+    .then(
+      res =>{
+        dispatch(success(res))
+      }
+    ).catch(error => {
+      dispatch(failure(error.response))
+    }) 
+  };
+  function request(){ return{type: BankAccountConstants.ADD_DEBT_PENDING}};
+  function success(res){return{type: BankAccountConstants.ADD_DEBT_SUCCESS, payload: res}};
+  function failure(error){return{type: BankAccountConstants.ADD_DEBT_ERROR, payload: error}};
+};
+function deleteDebt(id){
+  return (dispatch) => {
+    dispatch(request());
+    BankAccountServices.deleteDebt(id)
+    .then(
+      res =>{
+        dispatch(success(res))
+      }
+    ).catch(error => {
+      dispatch(failure(error.response))
+    }) 
+  };
+  function request(){ return{type: BankAccountConstants.DELETE_DEBT_PENDING}};
+  function success(res){return{type: BankAccountConstants.DELETE_DEBT_SUCCESS, payload: res}};
+  function failure(error){return{type: BankAccountConstants.DELETE_DEBT_ERROR, payload: error}};
+};
+function getDebt(){
+  return (dispatch) => {
+    dispatch(request());
+    BankAccountServices.getDebt()
+    .then(
+      res =>{
+        dispatch(success(res))
+      }
+    ).catch(error => {
+      dispatch(failure(error.response))
+    }) 
+  };
+  function request(){ return{type: BankAccountConstants.GET_DEBT_PENDING}};
+  function success(res){return{type: BankAccountConstants.GET_DEBT_SUCCESS, payload: res}};
+  function failure(error){return{type: BankAccountConstants.GET_DEBT_ERROR, payload: error}};
+};
+function getBeDebt(){
+  return (dispatch) => {
+    dispatch(request());
+    BankAccountServices.getBeDebt()
+    .then(
+      res =>{
+        dispatch(success(res))
+      }
+    ).catch(error => {
+      dispatch(failure(error.response))
+    }) 
+  };
+  function request(){ return{type: BankAccountConstants.GET_BE_DEBT_PENDING}};
+  function success(res){return{type: BankAccountConstants.GET_BE_DEBT_SUCCESS, payload: res}};
+  function failure(error){return{type: BankAccountConstants.GET_BE_DEBT_ERROR, payload: error}};
+};
+
 
 
 
@@ -113,5 +179,9 @@ export const bankAccountActions = {
   createRemindList,
   deleteRemindList,
   updateRemindList,
-  getTransactionHistory
+  getTransactionHistory,
+  addDebt,
+  deleteDebt,
+  getDebt,
+  getBeDebt
 }

@@ -37,7 +37,7 @@ const admin = (state = initialState, action) => {
           NameItem.ACCESS_TOKEN,
           action.payload.access_token
         );
-        sessionStorage.setItem(
+        localStorage.setItem(
             NameItem.REFRESH_TOKEN,
             action.payload.refresh_token
           );

@@ -151,6 +151,84 @@ const bankAccount = (state = initialState, action) => {
         getTransactionHistorySuccess: false,
         getTransactionHistoryError: action.payload,
       };
+    /* ------------------------- get transaction history ------------------------ */
+    case BankAccountConstants.ADD_DEBT_PENDING:
+      return {
+        addDebtPending: true,
+        addDebtSuccess: false,
+        addDebtError: null,
+      };
+    case BankAccountConstants.ADD_DEBT_SUCCESS:
+      return {
+        addDebtPending: false,
+        addDebtSuccess: true,
+        addDebtError: null,
+      };
+    case BankAccountConstants.ADD_DEBT_ERROR:
+      return {
+        addDebtPending: false,
+        addDebtSuccess: false,
+        addDebtError: action.payload,
+      };
+    /* ------------------------- get transaction history ------------------------ */
+    case BankAccountConstants.DELETE_DEBT_PENDING:
+      return {
+        deleteDebtPending: true,
+        deleteDebtSuccess: false,
+        deleteDebtError: null,
+      };
+    case BankAccountConstants.DELETE_DEBT_SUCCESS:
+      return {
+        getTransactionHistoryPending: false,
+        deleteDebtSuccess: true,
+        deleteDebtError: null,
+      };
+    case BankAccountConstants.DELETE_DEBT_ERROR:
+      return {
+        getTransactionHistoryPending: false,
+        deleteDebtSuccess: false,
+        deleDebtError: null
+      };
+    /* ------------------------- get transaction history ------------------------ */
+    case BankAccountConstants.GET_DEBT_PENDING:
+      return {
+        getDebtPending: true,
+        getDebtSuccess: false,
+        getDebtError: null,
+      };
+    case BankAccountConstants.GET_DEBT_SUCCESS:
+      return {
+        getDebtPending: false,
+        getDebtSuccess: true,
+        getDebtError: null,
+        debt: action.payload
+      };
+    case BankAccountConstants.GET_DEBT_ERROR:
+      return {
+        getDebtPending: false,
+        getDebtSuccess: false,
+        getDebtError: action.payload,
+      };
+    /* ------------------------- get transaction history ------------------------ */
+    case BankAccountConstants.GET_BE_DEBT_PENDING:
+      return {
+        getBeDebtPending: true,
+        getBeDebtSuccess: false,
+        getBeDebtError: null,
+      };
+    case BankAccountConstants.GET_BE_DEBT_SUCCESS:
+      return {
+        getBeDebtPending: false,
+        getBeDebtSuccess: true,
+        getBeDebtError: null,
+        beDebt: action.payload
+      };
+    case BankAccountConstants.GET_BE_DEBT_ERROR:
+      return {
+        getBeDebtPending: false,
+        getBeDebtSuccess: false,
+        getBeDebtError: action.payload,
+      };
     default:
       return state;
   }
