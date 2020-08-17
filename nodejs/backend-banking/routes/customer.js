@@ -6,6 +6,7 @@ const otpModel = require('../models/transaction_otp.model');
 const resetPassOtpModel = require('../models/reset_password_otp.model');
 const transactionModel = require('../models/transaction.models');
 const remindListModel = require('../models/remind.model');
+const debtModel = require('../models/debt.model');
 const interbank_credit_info = require('../utils/partner/credit_info');
 const interbank_transfer = require('../utils/partner/transfer');
 const bcrypt = require('bcryptjs');
@@ -527,6 +528,88 @@ router.put("/remind-list", authenJWT, async (req, res) => {
   remind_id = req.body["remind_id"];
   remindListModel.update(remind_id, req.body);
   return res.status(201).json({ "message": "success" });
+})
+
+
+/*POST dept*/
+router.post("/add-debt", authenJWT, async (req, res) => {
+  let result;
+
+  req.body["lender_id"] = req.body["customer_id"];
+
+  try {
+    result = await customerModel.searchByCreditNumber(req.body["debtor_credit"]);
+  } catch (err) {
+    return res.status(400).json({ "err": "invalid debtor_credit" });
+  }
+
+  const debtorInfo = result[0];
+  req.body["debtor_id"] = debtorInfo["customer_id"];
+  req.body["debtor_name"] = debtorInfo["lastname"] + " " + debtorInfo["firstname"];
+
+  if (req.body["lender_id"] === req.body["debtor_id"]) {
+    return res.status(400).json({ "err": "invalid debtor_credit, same credit_number with customer" });
+  }
+
+  try {
+    result = await customerModel.searchByCustomerId(req.body["customer_id"]);
+  } catch (err) {
+    return res.status(400).json({ "err": "invalid debtor_credit" });
+  }
+  const lenderInfo = result[0];
+  req.body["lender_name"] = lenderInfo["lastname"] + " " + lenderInfo["firstname"]
+
+  delete req.body["customer_id"]
+  delete req.body["debtor_credit"]
+
+  try {
+    result = await debtModel.add(req.body);
+  } catch (err) {
+    return res.status(400).json(err)
+  }
+
+  return res.status(201).json(req.body);
+})
+
+/* GET list debt */
+router.get("/debts", authenJWT, async (req, res) => {
+  let result;
+
+  try {
+    result = await debtModel.get_list_debt(req.body["customer_id"]);
+  } catch (err) {
+    return res.status(400).json(err);
+  }
+
+  res.status(200).json(result);
+})
+
+/* GET list bedebt */
+router.get("/be-debts", authenJWT, async (req, res) => {
+  let result;
+
+  try {
+    result = await debtModel.get_list_bedebt(req.body["customer_id"]);
+  } catch (err) {
+    return res.status(400).json(err);
+  }
+
+  res.status(200).json(result);
+})
+
+/* PUT update dept status */
+router.put("/remove-debt", authenJWT, async (req, res) => {
+  let result;
+
+  try {
+    result = await debtModel.deactive_debt(req.body["debt_id"]);
+  } catch (err) {
+    return res.status(400).json(err)
+  }
+
+  return res.status(201).json({
+    "message": "deactive debt success"
+  });
 })
 
 module.exports = router;

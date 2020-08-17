@@ -1,5 +1,5 @@
 const config = require('../config');
-const https = require('follow-redirects').https;
+const http = require('follow-redirects').http;
 const crypto = require('crypto');
 const fs = require('fs');
 const nodeRSA = require('node-rsa')
@@ -7,7 +7,8 @@ const nodeRSA = require('node-rsa')
 const interbank_transfer = (credit_number, username, amount, message, partner_code) => {
   const options = {
     method: "POST",
-    maxRedirects: 5
+    maxRedirects: 5,
+    timeout: 5000,
   };
 
   switch (partner_code) {
@@ -43,7 +44,7 @@ const interbank_transfer = (credit_number, username, amount, message, partner_co
       };
 
       return new Promise((resolve, reject) => {
-        var req = https.request(options, function (res) {
+        var req = http.request(options, function (res) {
           var chunks = '';
 
           res.on("data", function (chunk) {
@@ -51,6 +52,12 @@ const interbank_transfer = (credit_number, username, amount, message, partner_co
           });
 
           res.on("end", function (chunk) {
+            if (res.statusCode > 400) {
+              console.log(body);
+              resolve(undefined);
+              return;
+            }
+
             var body = JSON.parse(chunks);
             resolve(res.statusCode);
           });
@@ -61,6 +68,11 @@ const interbank_transfer = (credit_number, username, amount, message, partner_co
 
         })
         req.write(data);
+        // use its "timeout" event to abort the request
+        req.on('timeout', () => {
+          resolve(undefined);
+          return;
+        });
         req.end();
       })
 

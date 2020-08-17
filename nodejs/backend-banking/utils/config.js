@@ -20,6 +20,10 @@ config["list_partner"] = {
   "NaniBank": {
     "host": "35.240.195.17",
     "secret_text": ""
+  },
+  "N42": {
+    "host": "https://nhom42bank.herokuapp.com/",
+    "secret_text": "_(5KmP*YcTM(@?:"
   }
 }
 

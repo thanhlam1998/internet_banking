@@ -24,6 +24,11 @@
         - [Tạo thông tin gợi nhớ](#tạo-thông-tin-gợi-nhớ)
         - [Xóa thông tin gợi nhớ](#xóa-thông-tin-gợi-nhớ)
         - [Chỉnh sửa thông tin gợi nhớ](#chỉnh-sửa-thông-tin-gợi-nhớ)
+      - [Ghi nợ](#ghi-nợ)
+        - [Thêm nợ](#thêm-nợ)
+        - [Xóa nợ](#xóa-nợ)
+        - [Lấy danh sách người nợ](#lấy-danh-sách-người-nợ)
+        - [Lấy danh sách bị nợ](#lấy-danh-sách-bị-nợ)
     - [API dành cho employee](#api-dành-cho-employee)
       - [Đăng Nhập](#đăng-nhập-1)
       - [Thêm thông tin khách hàng vào hệ thống](#thêm-thông-tin-khách-hàng-vào-hệ-thống)
@@ -54,6 +59,7 @@
     - [Deploy lên Kubernetes cluster trên Google Cloud](#deploy-lên-kubernetes-cluster-trên-google-cloud)
     - [CI/CD](#cicd)
   - [Trang web hữu ích](#trang-web-hữu-ích)
+  - [Database diagram](#database-diagram)
 
 ## Thuật toán bảo mật API
 
@@ -359,6 +365,56 @@ BODY
     "remind_name": "idkwtfigo",
     "partner_code": "changed"
 }
+```
+
+#### Ghi nợ
+
+##### Thêm nợ
+
+```json
+POST /api/customer/add-debt
+
+HEADER
+"access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcl9pZCI6MSwiaWF0IjoxNTkxOTQ1OTE0LCJleHAiOjE1OTE5NTE5MTR9.JRYklbQtj-jCvEXWj1109RfdZtHrecZYBBjrTHJuH8Y"
+
+BODY
+{
+    "debtor_credit": "565572661049",
+    "amount": 500000,
+    "content": "fuck this shit"
+}
+```
+
+##### Xóa nợ
+
+```json
+PUT /api/customer/remove-debt
+
+HEADER
+"access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcl9pZCI6MSwiaWF0IjoxNTkxOTQ1OTE0LCJleHAiOjE1OTE5NTE5MTR9.JRYklbQtj-jCvEXWj1109RfdZtHrecZYBBjrTHJuH8Y"
+
+BODY
+{
+    "debt_id": 1
+}
+```
+
+##### Lấy danh sách người nợ
+
+```json
+GET /api/customer/debts
+
+HEADER
+"access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcl9pZCI6MSwiaWF0IjoxNTkxOTQ1OTE0LCJleHAiOjE1OTE5NTE5MTR9.JRYklbQtj-jCvEXWj1109RfdZtHrecZYBBjrTHJuH8Y"
+```
+
+##### Lấy danh sách bị nợ
+
+```json
+GET /api/customer/bedebts
+
+HEADER
+"access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcl9pZCI6MSwiaWF0IjoxNTkxOTQ1OTE0LCJleHAiOjE1OTE5NTE5MTR9.JRYklbQtj-jCvEXWj1109RfdZtHrecZYBBjrTHJuH8Y"
 ```
 
 ### API dành cho employee
@@ -1004,3 +1060,7 @@ Tự động deploy lên Kubernetes khi merge vào `master`
 - Beautify và minify json <https://codebeautify.org/jsonviewer>
 - Hash, encode decode <https://emn178.github.io/online-tools/sha256.html>
 - Hash online <https://quickhash.com/>
+
+## Database diagram
+
+![dbdiagram](./images/dbdiagram.png)

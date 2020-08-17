@@ -19,6 +19,7 @@
     "mysql": "^2.18.1",
     "node-rsa": "^1.1.1",
     "nodemailer": "^6.4.6",
+    "openpgp": "^4.10.7",
     "randomstring": "^1.1.5"
   }
 }
