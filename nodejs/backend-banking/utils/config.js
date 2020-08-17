@@ -1,6 +1,7 @@
 const config = {};
 
 config["secret_text"] = "cantexitvim";
+config["openpgp_passphrase"]="cantexitnvim"
 
 config["accesstoken_exp"] = 6000;
 config["refreshtoken_exp"] = "30d";
@@ -18,8 +19,8 @@ config["list_partner"] = {
     "secret_text": "bankdbb"
   },
   "NaniBank": {
-    "host": "35.240.195.17",
-    "secret_text": ""
+    "host": "35.247.178.19",
+    "secret_text": "himom"
   },
   "N42": {
     "host": "https://nhom42bank.herokuapp.com/",

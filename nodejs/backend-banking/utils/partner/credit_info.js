@@ -8,25 +8,25 @@ const interbank_credit_info = (credit_number, partner_code) => {
   const options = {
     method: "GET",
     maxRedirects: 5,
-    timeout: 5000,
+    timeout: 5000
   };
 
   switch (partner_code) {
     case "NaniBank": {
       const ts = Math.floor(Date.now() / 1000)
-      const postData = {
-        "name": "KiantoBank",
-        "id": credit_number
-      }
+      const postData = {}
       const data = JSON.stringify(postData);
-      const dataToHash = ts + data + config.list_partner.NaniBank.secret_text;
-      let hashString = crypto.createHash('sha256').update(dataToHash).digest('base64');
+      const dataToHash = ts + config.list_partner.NaniBank.secret_text + data;
+      let hashString = crypto.createHash('sha256').update(dataToHash).digest('hex');
 
+      options.port = 3000
       options.hostname = config.list_partner.NaniBank.host
-      options.path = `/partner`;
+      options.path = `/partner?id=${credit_number}`;
       options.headers = {
         'timestamp': ts,
-        'authen-hash': hashString
+        'authen-hash': hashString,
+        'name': "KiantoBank",
+        'origin': 'www.nanibank.com'
       };
 
       return new Promise((resolve, reject) => {
@@ -38,14 +38,17 @@ const interbank_credit_info = (credit_number, partner_code) => {
           });
 
           res.on("end", function (chunk) {
+            console.log(chunks, res.statusCode)
             if (res.statusCode > 400) {
-              console.log(body);
               resolve(undefined);
               return;
             }
 
             var body = JSON.parse(chunks);
-            resolve(body["name"]);
+            if (body["Status"] === false) {
+              resolve(undefined);
+            }
+            resolve(body["Info"]);
           });
 
           res.on("error", function (error) {
@@ -53,7 +56,7 @@ const interbank_credit_info = (credit_number, partner_code) => {
           });
 
         })
-        req.write(data);
+
         // use its "timeout" event to abort the request
         req.on('timeout', () => {
           resolve(undefined);
@@ -85,8 +88,8 @@ const interbank_credit_info = (credit_number, partner_code) => {
           });
 
           res.on("end", function (chunk) {
+            console.log(chunks, res.statusCode)
             if (res.statusCode > 400) {
-              console.log(body);
               resolve(undefined);
               return;
             }

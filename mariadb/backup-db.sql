@@ -50,7 +50,7 @@ DROP TABLE IF EXISTS `credit_account`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `credit_account` (
   `customer_id` int(11) NOT NULL,
-  `credit_number` char(15) COLLATE utf8_unicode_ci NOT NULL,
+  `credit_number` char(30) COLLATE utf8_unicode_ci NOT NULL,
   `balance` char(30) COLLATE utf8_unicode_ci NOT NULL,
   `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`credit_number`),
@@ -148,7 +148,7 @@ DROP TABLE IF EXISTS `deposit_transaction_history`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `deposit_transaction_history` (
   `transaction_id` int(11) NOT NULL AUTO_INCREMENT,
-  `credit_number` char(15) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `credit_number` char(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `amount` bigint(20) unsigned DEFAULT NULL,
   `ts` bigint(20) unsigned DEFAULT NULL,
   `partner_code` char(20) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -233,8 +233,8 @@ DROP TABLE IF EXISTS `receive_from_transaction_history`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `receive_from_transaction_history` (
   `transaction_id` int(11) NOT NULL AUTO_INCREMENT,
-  `credit_number` char(15) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `from_credit_number` char(15) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `credit_number` char(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `from_credit_number` char(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `amount` bigint(20) unsigned DEFAULT NULL,
   `message` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `partner_code` char(20) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -321,7 +321,7 @@ DROP TABLE IF EXISTS `saving_account`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `saving_account` (
   `account_id` int(11) NOT NULL AUTO_INCREMENT,
-  `credit_number` char(15) COLLATE utf8_unicode_ci NOT NULL,
+  `credit_number` char(30) COLLATE utf8_unicode_ci NOT NULL,
   `balance` char(30) COLLATE utf8_unicode_ci NOT NULL,
   `customer_id` int(11) NOT NULL,
   PRIMARY KEY (`account_id`),
@@ -348,8 +348,8 @@ DROP TABLE IF EXISTS `sent_to_transaction_history`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sent_to_transaction_history` (
   `transaction_id` int(11) NOT NULL AUTO_INCREMENT,
-  `credit_number` char(15) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `to_credit_number` char(15) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `credit_number` char(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `to_credit_number` char(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `amount` bigint(20) unsigned DEFAULT NULL,
   `message` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `partner_code` char(20) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -380,8 +380,8 @@ DROP TABLE IF EXISTS `transaction_otp`;
 CREATE TABLE `transaction_otp` (
   `transaction_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `customer_id` int(11) NOT NULL,
-  `from_credit_number` char(15) COLLATE utf8_unicode_ci NOT NULL,
-  `to_credit_number` char(15) COLLATE utf8_unicode_ci NOT NULL,
+  `from_credit_number` char(30) COLLATE utf8_unicode_ci NOT NULL,
+  `to_credit_number` char(30) COLLATE utf8_unicode_ci NOT NULL,
   `amount` bigint(20) unsigned NOT NULL,
   `message` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `fee_payer` char(10) COLLATE utf8_unicode_ci NOT NULL,
@@ -416,7 +416,7 @@ DROP TABLE IF EXISTS `withdraw_transaction_history`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `withdraw_transaction_history` (
   `transaction_id` int(11) NOT NULL AUTO_INCREMENT,
-  `credit_number` char(15) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `credit_number` char(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `amount` bigint(20) unsigned DEFAULT NULL,
   `ts` bigint(20) unsigned DEFAULT NULL,
   `partner_code` char(20) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -449,7 +449,7 @@ UNLOCK TABLES;
 /*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`%` PROCEDURE `deposit`(
-	IN accNum char(15),
+	IN accNum char(30),
 	IN amount int
 )
 BEGIN
@@ -477,7 +477,7 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`%` PROCEDURE `withdraw`(
-	IN accNum char(15),
+	IN accNum char(30),
 	IN amount int
 )
 BEGIN
