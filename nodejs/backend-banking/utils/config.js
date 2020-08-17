@@ -1,6 +1,7 @@
 const config = {};
 
 config["secret_text"] = "cantexitvim";
+config["openpgp_passphrase"]="cantexitnvim"
 
 config["accesstoken_exp"] = 6000;
 config["refreshtoken_exp"] = "30d";
