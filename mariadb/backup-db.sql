@@ -1,8 +1,8 @@
--- MariaDB dump 10.17  Distrib 10.5.4-MariaDB, for debian-linux-gnu (x86_64)
+-- MariaDB dump 10.17  Distrib 10.5.5-MariaDB, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: banking
 -- ------------------------------------------------------
--- Server version	10.5.4-MariaDB-1:10.5.4+maria~focal
+-- Server version	10.5.5-MariaDB-1:10.5.5+maria~focal
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -50,7 +50,7 @@ DROP TABLE IF EXISTS `credit_account`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `credit_account` (
   `customer_id` int(11) NOT NULL,
-  `credit_number` char(15) COLLATE utf8_unicode_ci NOT NULL,
+  `credit_number` char(30) COLLATE utf8_unicode_ci NOT NULL,
   `balance` char(30) COLLATE utf8_unicode_ci NOT NULL,
   `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`credit_number`),
@@ -105,6 +105,41 @@ INSERT INTO `customer` VALUES (1,'025895863','LINH','NGUYEN VAN','1998-11-12','0
 UNLOCK TABLES;
 
 --
+-- Table structure for table `debt`
+--
+
+DROP TABLE IF EXISTS `debt`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `debt` (
+  `debt_id` int(11) NOT NULL AUTO_INCREMENT,
+  `lender_id` int(11) DEFAULT NULL,
+  `lender_name` varchar(100) DEFAULT NULL,
+  `debtor_id` int(11) DEFAULT NULL,
+  `debtor_name` varchar(100) DEFAULT NULL,
+  `amount` char(30) DEFAULT NULL,
+  `content` text DEFAULT NULL,
+  `status` tinyint(1) DEFAULT NULL,
+  `createdAt` datetime DEFAULT NULL,
+  `updatedAt` datetime DEFAULT NULL,
+  PRIMARY KEY (`debt_id`),
+  KEY `lender_id` (`lender_id`),
+  KEY `debtor_id` (`debtor_id`),
+  CONSTRAINT `debt_ibfk_1` FOREIGN KEY (`lender_id`) REFERENCES `customer` (`customer_id`),
+  CONSTRAINT `debt_ibfk_2` FOREIGN KEY (`debtor_id`) REFERENCES `customer` (`customer_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `debt`
+--
+
+LOCK TABLES `debt` WRITE;
+/*!40000 ALTER TABLE `debt` DISABLE KEYS */;
+/*!40000 ALTER TABLE `debt` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `deposit_transaction_history`
 --
 
@@ -113,7 +148,7 @@ DROP TABLE IF EXISTS `deposit_transaction_history`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `deposit_transaction_history` (
   `transaction_id` int(11) NOT NULL AUTO_INCREMENT,
-  `credit_number` char(15) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `credit_number` char(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `amount` bigint(20) unsigned DEFAULT NULL,
   `ts` bigint(20) unsigned DEFAULT NULL,
   `partner_code` char(20) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -176,7 +211,7 @@ CREATE TABLE `partner_api` (
   UNIQUE KEY `bankname` (`bankname`),
   UNIQUE KEY `partner_code` (`partner_code`),
   UNIQUE KEY `public_key` (`public_key`) USING HASH
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -185,7 +220,7 @@ CREATE TABLE `partner_api` (
 
 LOCK TABLES `partner_api` WRITE;
 /*!40000 ALTER TABLE `partner_api` DISABLE KEYS */;
-INSERT INTO `partner_api` VALUES (1,'linh','linhbank','LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlHZk1BMEdDU3FHU0liM0RRRUJBUVVBQTRHTkFEQ0JpUUtCZ1FDSmxRWi9tMStpTGZLL2xwWURtaWNsZTZ2MApsbExXdGRZaFNrSDZidWlPck5iYVhWSC8vWmNHOVRwT0xVMXZMK1BrdnByQ1ovTjFTdHF6MHhOcnpjZFQwekZJCnhRU3IzMWZCMXF6RDIrVDRuakJjR1JPU3R2MHV4aGFhcm1XVkp3akxpYTBybEw3Z3JSTDBheHc0ckVTTTluc04KYmU4WG5KR1ZLdEZ5OU1YSEJ3SURBUUFCCi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQ==','kQYtFpj7pJfi5VVfoeGD','idk'),(2,'NaniBank','NaniBank','LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFnc1JybVl2cUZlWEdudExSYS84NApaeDdJNWlKa0RZTlZsQ1hDeHIyV1ZBb1lLa2lRV1cvamxERDRPRWhLQ1pDSmdWVkdUNDNYeFVrUTNzdjcrZVZPCjFNTzFpU2JNcWw5NlZTQkx3eWJJZlByRmpNWG5vWEU0bGdSeTA2bEFtQ1NUbWp2V1pXNnhybEdSd2RrV054SWIKa3RSNmVSaUkvL0VSS3FoRk0rWFoydXIveFR5djI4aFpoajhVSW55SEpvZ2ZQaVgvY2FsMWRyLzdHS3pxeXFVcAovbVJudGEzMWhWWlpzWGIxTENRdHluWkk2cGZVS0xaN2pvazRMN0xtK1M5K0QzZGhjTXhCd0pEMTVJakNEdFFFCjM3bGh1YVJXQjcyaE9wTkZYRkVVV1hsNDA4U01SeXFiR1Bwcy91K1RFbXN0eW85cXlVdmR3V0ViTWczR21FN00KR1FJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0t','M0ec3lAqjHV82v66VYDb','hi mom'),(3,'bankdbb','bankdbb','LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlHZU1BMEdDU3FHU0liM0RRRUJBUVVBQTRHTUFEQ0JpQUtCZ0h2R2ZDck9zTFBvbEtUT3BycXpndU5wODVnawpHZGgvd2JDQnRYQnRYN09iTVNQcUJOMGFGZ2lqUmZuME5Lb2xJbjBpZXZFaWFiODJ0dEJPNTdGR2dOV0crZm0vCkNxWDcyZE9waXQ5QTVXcWR3S1k1aUkvMHlPK1dOTXRKcUx3SjVxcy9DcDBFd0ZBYnFNaC80VXhzeWFpdzAyOWgKWDJJSkVkVzhvWWIrMG13UEFnTUJBQUU9Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQ==','Tj0xYDEDiQF9f2GYCxSv','bankdbb');
+INSERT INTO `partner_api` VALUES (1,'linh','linhbank','LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlHZk1BMEdDU3FHU0liM0RRRUJBUVVBQTRHTkFEQ0JpUUtCZ1FDSmxRWi9tMStpTGZLL2xwWURtaWNsZTZ2MApsbExXdGRZaFNrSDZidWlPck5iYVhWSC8vWmNHOVRwT0xVMXZMK1BrdnByQ1ovTjFTdHF6MHhOcnpjZFQwekZJCnhRU3IzMWZCMXF6RDIrVDRuakJjR1JPU3R2MHV4aGFhcm1XVkp3akxpYTBybEw3Z3JSTDBheHc0ckVTTTluc04KYmU4WG5KR1ZLdEZ5OU1YSEJ3SURBUUFCCi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQ==','kQYtFpj7pJfi5VVfoeGD','idk'),(2,'NaniBank','NaniBank','LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFnc1JybVl2cUZlWEdudExSYS84NApaeDdJNWlKa0RZTlZsQ1hDeHIyV1ZBb1lLa2lRV1cvamxERDRPRWhLQ1pDSmdWVkdUNDNYeFVrUTNzdjcrZVZPCjFNTzFpU2JNcWw5NlZTQkx3eWJJZlByRmpNWG5vWEU0bGdSeTA2bEFtQ1NUbWp2V1pXNnhybEdSd2RrV054SWIKa3RSNmVSaUkvL0VSS3FoRk0rWFoydXIveFR5djI4aFpoajhVSW55SEpvZ2ZQaVgvY2FsMWRyLzdHS3pxeXFVcAovbVJudGEzMWhWWlpzWGIxTENRdHluWkk2cGZVS0xaN2pvazRMN0xtK1M5K0QzZGhjTXhCd0pEMTVJakNEdFFFCjM3bGh1YVJXQjcyaE9wTkZYRkVVV1hsNDA4U01SeXFiR1Bwcy91K1RFbXN0eW85cXlVdmR3V0ViTWczR21FN00KR1FJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0t','M0ec3lAqjHV82v66VYDb','himom'),(3,'bankdbb','bankdbb','LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlHZU1BMEdDU3FHU0liM0RRRUJBUVVBQTRHTUFEQ0JpQUtCZ0h2R2ZDck9zTFBvbEtUT3BycXpndU5wODVnawpHZGgvd2JDQnRYQnRYN09iTVNQcUJOMGFGZ2lqUmZuME5Lb2xJbjBpZXZFaWFiODJ0dEJPNTdGR2dOV0crZm0vCkNxWDcyZE9waXQ5QTVXcWR3S1k1aUkvMHlPK1dOTXRKcUx3SjVxcy9DcDBFd0ZBYnFNaC80VXhzeWFpdzAyOWgKWDJJSkVkVzhvWWIrMG13UEFnTUJBQUU9Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQ==','Tj0xYDEDiQF9f2GYCxSv','bankdbb'),(4,'N42','nhom42bank','LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlHZk1BMEdDU3FHU0liM0RRRUJBUVVBQTRHTkFEQ0JpUUtCZ1FDQ1AxTXhjdWlRUVM5N2ROdWVFNmI2dzVJWApybHdpRU5OU1dSZThVd1Fpa0VNUW5qU3NxZ3BlWFJiUm8ybWpTZ2V4cGxuNDE2UFAvRlBYUmg2clMxcHVDeUxMCk40Z1hZYTdwbFF5ZDU4NkV3NE9CVlZGV25hN29oSmNNTGJWWDF3Z0FwWmRlYmJpbm5VeG5JN0E2WkdMOVFrRysKN29UWWZOb0ZYSDdXR3NaUWJ3SURBUUFCCi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo=','HjvV0rNq1GOvnPZmNaF3','_(5KmP*YcTM(@?:');
 /*!40000 ALTER TABLE `partner_api` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -198,8 +233,8 @@ DROP TABLE IF EXISTS `receive_from_transaction_history`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `receive_from_transaction_history` (
   `transaction_id` int(11) NOT NULL AUTO_INCREMENT,
-  `credit_number` char(15) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `from_credit_number` char(15) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `credit_number` char(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `from_credit_number` char(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `amount` bigint(20) unsigned DEFAULT NULL,
   `message` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `partner_code` char(20) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -286,7 +321,7 @@ DROP TABLE IF EXISTS `saving_account`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `saving_account` (
   `account_id` int(11) NOT NULL AUTO_INCREMENT,
-  `credit_number` char(15) COLLATE utf8_unicode_ci NOT NULL,
+  `credit_number` char(30) COLLATE utf8_unicode_ci NOT NULL,
   `balance` char(30) COLLATE utf8_unicode_ci NOT NULL,
   `customer_id` int(11) NOT NULL,
   PRIMARY KEY (`account_id`),
@@ -313,8 +348,8 @@ DROP TABLE IF EXISTS `sent_to_transaction_history`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sent_to_transaction_history` (
   `transaction_id` int(11) NOT NULL AUTO_INCREMENT,
-  `credit_number` char(15) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `to_credit_number` char(15) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `credit_number` char(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `to_credit_number` char(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `amount` bigint(20) unsigned DEFAULT NULL,
   `message` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `partner_code` char(20) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -345,8 +380,8 @@ DROP TABLE IF EXISTS `transaction_otp`;
 CREATE TABLE `transaction_otp` (
   `transaction_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `customer_id` int(11) NOT NULL,
-  `from_credit_number` char(15) COLLATE utf8_unicode_ci NOT NULL,
-  `to_credit_number` char(15) COLLATE utf8_unicode_ci NOT NULL,
+  `from_credit_number` char(30) COLLATE utf8_unicode_ci NOT NULL,
+  `to_credit_number` char(30) COLLATE utf8_unicode_ci NOT NULL,
   `amount` bigint(20) unsigned NOT NULL,
   `message` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `fee_payer` char(10) COLLATE utf8_unicode_ci NOT NULL,
@@ -381,7 +416,7 @@ DROP TABLE IF EXISTS `withdraw_transaction_history`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `withdraw_transaction_history` (
   `transaction_id` int(11) NOT NULL AUTO_INCREMENT,
-  `credit_number` char(15) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `credit_number` char(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `amount` bigint(20) unsigned DEFAULT NULL,
   `ts` bigint(20) unsigned DEFAULT NULL,
   `partner_code` char(20) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -414,7 +449,7 @@ UNLOCK TABLES;
 /*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`%` PROCEDURE `deposit`(
-	IN accNum char(15),
+	IN accNum char(30),
 	IN amount int
 )
 BEGIN
@@ -442,7 +477,7 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`%` PROCEDURE `withdraw`(
-	IN accNum char(15),
+	IN accNum char(30),
 	IN amount int
 )
 BEGIN
@@ -474,4 +509,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-07-18 16:44:13
+-- Dump completed on 2020-08-17 14:09:49
