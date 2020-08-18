@@ -1,8 +1,8 @@
--- MariaDB dump 10.17  Distrib 10.5.5-MariaDB, for debian-linux-gnu (x86_64)
+-- MariaDB dump 10.17  Distrib 10.4.13-MariaDB, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: banking
 -- ------------------------------------------------------
--- Server version	10.5.5-MariaDB-1:10.5.5+maria~focal
+-- Server version	10.4.13-MariaDB-1:10.4.13+maria~focal
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -180,7 +180,7 @@ CREATE TABLE `employee` (
   `hashed_password` text COLLATE utf8_unicode_ci NOT NULL,
   `refresh_secret` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`employee_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -189,7 +189,7 @@ CREATE TABLE `employee` (
 
 LOCK TABLES `employee` WRITE;
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
-INSERT INTO `employee` VALUES ('trump',1,'$2a$08$z/eROGEhVaw2HNino1zm/.IOsrV6VZApPLW58OEmZOHgYNKgoSBRq','jXHvcBfimELm08lOAT1x');
+INSERT INTO `employee` VALUES ('trump',1,'$2a$08$z/eROGEhVaw2HNino1zm/.IOsrV6VZApPLW58OEmZOHgYNKgoSBRq','jXHvcBfimELm08lOAT1x'),('linhnguyen',2,'$2a$08$GBxBwOQmgqnPey6V5U4PA.zWaB3l9EZHu40bgkXFdv0s0UBNxFv02','EmSa4EasanF0ZKEaVaz4'),('lamnguyen',3,'$2a$08$l5V2RG6RCcCEPLmQaHNkC.kkR9.qE8mUloirE.Z1P97eAAB7fMFy2','t4N7oZ7BUurlnQIlo1D1'),('khuedoan',4,'$2a$08$hTti.RNvkUKldXxc24okHO5ZKOGoI7CBBegImM1WRKwR9pFsKTVp.','6gvqJetSstbDbHwFxXit');
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -509,4 +509,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-08-17 14:09:49
+-- Dump completed on 2020-08-18 15:36:24
