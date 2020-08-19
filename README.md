@@ -57,11 +57,12 @@
     * [Cách sử dụng api của ngân hàng RSA](#cách-s-dng-api-ca-ngân-hàng-rsa)
         * [Lấy thông tin tài khoản khách hàng bằng số tài khoản rsa](#ly-thông-tin-tài-khon-khách-hàng-bng-s-tài-khon-rsa)
         * [Nạp tiền vào tài khoản rsa](#np-tin-vào-tài-khon-rsa)
-* [Docker và Kubernetes](#docker-và-kubernetes)
-    * [Môi trường lập trình local](#môi-trng-lp-trình-local)
+* [DevOps](#devops)
+    * [Môi trường lập trình local với Docker Compose](#môi-trng-lp-trình-local-vi-docker-compose)
+    * [Tạo Kubernetes cluster trên GCP bằng Terraform](#to-kubernetes-cluster-trên-gcp-bng-terraform)
     * [Deploy lên Kubernetes cluster trên Google Cloud](#deploy-lên-kubernetes-cluster-trên-google-cloud)
-    * [CI/CD](#cicd)
-    * [Database diagram](#database-diagram)
+    * [GitlabCI](#gitlabci)
+* [Database diagram](#database-diagram)
 * [Danh sách tài khoản có sẵn](#danh-sách-tài-khon-có-sn)
     * [Customer](#customer)
     * [Employee](#employee)
@@ -1012,10 +1013,10 @@ const NodeRSA = require('node-rsa');
 const privateKey = new NodeRSA(privateKeyRSA);
 const sig = privateKey.sign(secretKey, 'base64', 'base64');
 ```
-  
-## Docker và Kubernetes
 
-### Môi trường lập trình local
+## DevOps
+
+### Môi trường lập trình local với Docker Compose
 
 Cài đặt `docker` và `docker-compose`
 
@@ -1031,6 +1032,10 @@ Restore database bằng script có sẵn:
 cd mariadb
 ./restore.sh
 ```
+
+### Tạo Kubernetes cluster trên GCP bằng Terraform
+
+Cluster được provision bằng Terraform với state được lưu trên Terraform Cloud.
 
 ### Deploy lên Kubernetes cluster trên Google Cloud
 
@@ -1057,11 +1062,16 @@ cd mariadb
 ./restore-kubernetes.sh
 ```
 
-### CI/CD
+### GitlabCI
 
-Tự động deploy lên Kubernetes khi merge vào `master`
+Khi merge vào `master`:
 
-### Database diagram
+- Apply những thay đổi trên Terraform nếu có
+- Build các image liên quan (frontend, backend)
+- Push các image đã build lên Docker Hub và gắn tag
+- Deploy lên Kubernetes
+
+## Database diagram
 
 ![dbdiagram](./images/dbdiagram.png)
 
