@@ -2,64 +2,73 @@
 
 ![Badge](https://gitlab.com/khuedoan/internet-banking/badges/master/pipeline.svg)
 
-- [Internet Banking](#internet-banking)
-  - [Thuật toán bảo mật API](#thuật-toán-bảo-mật-api)
-  - [Hướng dẫn sử dụng api](#hướng-dẫn-sử-dụng-api)
-    - [API dành cho partner](#api-dành-cho-partner)
-      - [Lấy thông tin tài khoản khách hàng bằng số tài khoản](#lấy-thông-tin-tài-khoản-khách-hàng-bằng-số-tài-khoản)
-      - [Nạp tiền vào tài khoản](#nạp-tiền-vào-tài-khoản)
-      - [Rút tiền từ tài khoản](#rút-tiền-từ-tài-khoản)
-    - [API dành cho customer](#api-dành-cho-customer)
-      - [Đăng Nhập](#đăng-nhập)
-      - [Lấy tên khách hàng bằng số  tài khoản tín dụng](#lấy-tên-khách-hàng-bằng-số-tài-khoản-tín-dụng)
-      - [Lấy toàn bộ danh sách tài khoản (credit + saving)](#lấy-toàn-bộ-danh-sách-tài-khoản-credit--saving)
-      - [Xem lịch sử giao dịch](#xem-lịch-sử-giao-dịch)
-      - [Chuyển khoản](#chuyển-khoản)
-      - [Xác thực mã otp](#xác-thực-mã-otp)
-      - [Reset mật khẩu](#reset-mật-khẩu)
-      - [Xác thực otp đổi mật khẩu](#xác-thực-otp-đổi-mật-khẩu)
-      - [Đổi mật khẩu](#đổi-mật-khẩu)
-      - [CRUD thông tin gợi nhớ](#crud-thông-tin-gợi-nhớ)
-        - [Xem thông tin gợi nhớ](#xem-thông-tin-gợi-nhớ)
-        - [Tạo thông tin gợi nhớ](#tạo-thông-tin-gợi-nhớ)
-        - [Xóa thông tin gợi nhớ](#xóa-thông-tin-gợi-nhớ)
-        - [Chỉnh sửa thông tin gợi nhớ](#chỉnh-sửa-thông-tin-gợi-nhớ)
-      - [Ghi nợ](#ghi-nợ)
-        - [Thêm nợ](#thêm-nợ)
-        - [Xóa nợ](#xóa-nợ)
-        - [Lấy danh sách người nợ](#lấy-danh-sách-người-nợ)
-        - [Lấy danh sách bị nợ](#lấy-danh-sách-bị-nợ)
-    - [API dành cho employee](#api-dành-cho-employee)
-      - [Đăng Nhập](#đăng-nhập-1)
-      - [Thêm thông tin khách hàng vào hệ thống](#thêm-thông-tin-khách-hàng-vào-hệ-thống)
-      - [Thêm tài khoản tiết kiệm](#thêm-tài-khoản-tiết-kiệm)
-      - [Nạp tiền vào tài khoản khách hàng](#nạp-tiền-vào-tài-khoản-khách-hàng)
-      - [Liệt kê lịch sử giao dịch của một khách hàng nhất định](#liệt-kê-lịch-sử-giao-dịch-của-một-khách-hàng-nhất-định)
-      - [Tạo mới access_token cho employee](#tạo-mới-access_token-cho-employee)
-    - [API dành cho admin](#api-dành-cho-admin)
-      - [Đăng Nhập](#đăng-nhập-2)
-      - [Thêm thông tin partner vào hệ thống](#thêm-thông-tin-partner-vào-hệ-thống)
-      - [Tạo tài khoản employee](#tạo-tài-khoản-employee)
-      - [Xóa tài khoản employee](#xóa-tài-khoản-employee)
-      - [Cập nhật username của employee](#cập-nhật-username-của-employee)
-      - [Cập nhật password của employee](#cập-nhật-password-của-employee)
-      - [Liệt kê danh sách employee](#liệt-kê-danh-sách-employee)
-      - [Lấy thông tin employee thông qua ID](#lấy-thông-tin-employee-thông-qua-id)
-      - [Lấy lịch sử giao dịch với ngân hàng khác](#lấy-lịch-sử-giao-dịch-với-ngân-hàng-khác)
-      - [Tạo mới access_token cho admin](#tạo-mới-access_token-cho-admin)
-  - [Một số thông tin mặc định được khởi tạo cùng với project, dùng để test api](#một-số-thông-tin-mặc-định-được-khởi-tạo-cùng-với-project-dùng-để-test-api)
-  - [Danh sách các ngân hàng  liên  kết](#danh-sách-các-ngân-hàng-liên-kết)
-    - [Ngân hàng đại diện nhóm chẵn (PGP)](#ngân-hàng-đại-diện-nhóm-chẵn-pgp)
-    - [Ngân hàng đại diện nhóm lẻ (RSA)](#ngân-hàng-đại-diện-nhóm-lẻ-rsa)
-    - [Cách sử dụng api của ngân hàng RSA](#cách-sử-dụng-api-của-ngân-hàng-rsa)
-      - [Lấy thông tin tài khoản khách hàng bằng số tài khoản rsa](#lấy-thông-tin-tài-khoản-khách-hàng-bằng-số-tài-khoản-rsa)
-      - [Nạp tiền vào tài khoản rsa](#nạp-tiền-vào-tài-khoản-rsa)
-  - [Docker và Kubernetes](#docker-và-kubernetes)
-    - [Môi trường lập trình local](#môi-trường-lập-trình-local)
-    - [Deploy lên Kubernetes cluster trên Google Cloud](#deploy-lên-kubernetes-cluster-trên-google-cloud)
-    - [CI/CD](#cicd)
-  - [Trang web hữu ích](#trang-web-hữu-ích)
-  - [Database diagram](#database-diagram)
+## Mục lục
+
+<!-- vim-markdown-toc GFM -->
+
+* [Thuật toán bảo mật API](#thut-toán-bo-mt-api)
+* [Hướng dẫn sử dụng api](#hng-dn-s-dng-api)
+    * [API dành cho partner](#api-dành-cho-partner)
+        * [Lấy thông tin tài khoản khách hàng bằng số tài khoản](#ly-thông-tin-tài-khon-khách-hàng-bng-s-tài-khon)
+        * [Nạp tiền vào tài khoản](#np-tin-vào-tài-khon)
+        * [Rút tiền từ tài khoản](#rút-tin-t-tài-khon)
+    * [API dành cho customer](#api-dành-cho-customer)
+        * [Đăng Nhập](#ng-nhp)
+        * [Lấy tên khách hàng bằng số  tài khoản tín dụng](#ly-tên-khách-hàng-bng-s--tài-khon-tín-dng)
+        * [Lấy toàn bộ danh sách tài khoản (credit + saving)](#ly-toàn-b-danh-sách-tài-khon-credit--saving)
+        * [Xem lịch sử giao dịch](#xem-lch-s-giao-dch)
+        * [Chuyển khoản](#chuyn-khon)
+        * [Xác thực mã otp](#xác-thc-mã-otp)
+        * [Reset mật khẩu](#reset-mt-khu)
+        * [Xác thực otp đổi mật khẩu](#xác-thc-otp-i-mt-khu)
+        * [Đổi mật khẩu](#i-mt-khu)
+        * [CRUD thông tin gợi nhớ](#crud-thông-tin-gi-nh)
+            * [Xem thông tin gợi nhớ](#xem-thông-tin-gi-nh)
+            * [Tạo thông tin gợi nhớ](#to-thông-tin-gi-nh)
+            * [Xóa thông tin gợi nhớ](#xóa-thông-tin-gi-nh)
+            * [Chỉnh sửa thông tin gợi nhớ](#chnh-sa-thông-tin-gi-nh)
+        * [Ghi nợ](#ghi-n)
+            * [Thêm nợ](#thêm-n)
+            * [Xóa nợ](#xóa-n)
+            * [Lấy danh sách người nợ](#ly-danh-sách-ngi-n)
+            * [Lấy danh sách bị nợ](#ly-danh-sách-b-n)
+    * [API dành cho employee](#api-dành-cho-employee)
+        * [Đăng Nhập](#ng-nhp-1)
+        * [Thêm thông tin khách hàng vào hệ thống](#thêm-thông-tin-khách-hàng-vào-h-thng)
+        * [Thêm tài khoản tiết kiệm](#thêm-tài-khon-tit-kim)
+        * [Nạp tiền vào tài khoản khách hàng](#np-tin-vào-tài-khon-khách-hàng)
+        * [Liệt kê lịch sử giao dịch của một khách hàng nhất định](#lit-kê-lch-s-giao-dch-ca-mt-khách-hàng-nht-nh)
+        * [Tạo mới access_token cho employee](#to-mi-access_token-cho-employee)
+    * [API dành cho admin](#api-dành-cho-admin)
+        * [Đăng Nhập](#ng-nhp-2)
+        * [Thêm thông tin partner vào hệ thống](#thêm-thông-tin-partner-vào-h-thng)
+        * [Tạo tài khoản employee](#to-tài-khon-employee)
+        * [Xóa tài khoản employee](#xóa-tài-khon-employee)
+        * [Cập nhật username của employee](#cp-nht-username-ca-employee)
+        * [Cập nhật password của employee](#cp-nht-password-ca-employee)
+        * [Liệt kê danh sách employee](#lit-kê-danh-sách-employee)
+        * [Lấy thông tin employee thông qua ID](#ly-thông-tin-employee-thông-qua-id)
+        * [Lấy lịch sử giao dịch với ngân hàng khác](#ly-lch-s-giao-dch-vi-ngân-hàng-khác)
+        * [Tạo mới access_token cho admin](#to-mi-access_token-cho-admin)
+* [Một số thông tin mặc định được khởi tạo cùng với project, dùng để test api](#mt-s-thông-tin-mc-nh-c-khi-to-cùng-vi-project-dùng--test-api)
+* [Danh sách các ngân hàng  liên  kết](#danh-sách-các-ngân-hàng--liên--kt)
+    * [Ngân hàng đại diện nhóm chẵn (PGP)](#ngân-hàng-i-din-nhóm-chn-pgp)
+    * [Ngân hàng đại diện nhóm lẻ (RSA)](#ngân-hàng-i-din-nhóm-l-rsa)
+    * [Cách sử dụng api của ngân hàng RSA](#cách-s-dng-api-ca-ngân-hàng-rsa)
+        * [Lấy thông tin tài khoản khách hàng bằng số tài khoản rsa](#ly-thông-tin-tài-khon-khách-hàng-bng-s-tài-khon-rsa)
+        * [Nạp tiền vào tài khoản rsa](#np-tin-vào-tài-khon-rsa)
+* [Docker và Kubernetes](#docker-và-kubernetes)
+    * [Môi trường lập trình local](#môi-trng-lp-trình-local)
+    * [Deploy lên Kubernetes cluster trên Google Cloud](#deploy-lên-kubernetes-cluster-trên-google-cloud)
+    * [CI/CD](#cicd)
+    * [Database diagram](#database-diagram)
+* [Danh sách tài khoản có sẵn](#danh-sách-tài-khon-có-sn)
+    * [Customer](#customer)
+    * [Employee](#employee)
+    * [Admin](#admin)
+* [Trang web hữu ích](#trang-web-hu-ích)
+
+<!-- vim-markdown-toc -->
 
 ## Thuật toán bảo mật API
 
@@ -1052,6 +1061,32 @@ cd mariadb
 
 Tự động deploy lên Kubernetes khi merge vào `master`
 
+### Database diagram
+
+![dbdiagram](./images/dbdiagram.png)
+
+## Danh sách tài khoản có sẵn
+
+### Customer
+
+| Username | Password |
+| :-- | :-- |
+|  |  |
+
+### Employee
+
+| Username | Password |
+| :-- | :-- |
+| linhnguyen | linhnguyen |
+| lamnguyen | lamnguyen |
+| khuedoan | khuedoan |
+
+### Admin
+
+| Username | Password |
+| :-- | :-- |
+| admin | admin |
+
 ## Trang web hữu ích
 
 - Tạo signature <https://8gwifi.org/rsasignverifyfunctions.jsp>
@@ -1060,7 +1095,3 @@ Tự động deploy lên Kubernetes khi merge vào `master`
 - Beautify và minify json <https://codebeautify.org/jsonviewer>
 - Hash, encode decode <https://emn178.github.io/online-tools/sha256.html>
 - Hash online <https://quickhash.com/>
-
-## Database diagram
-
-![dbdiagram](./images/dbdiagram.png)
