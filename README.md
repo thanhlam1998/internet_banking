@@ -51,6 +51,9 @@
         * [Lấy lịch sử giao dịch với ngân hàng khác](#ly-lch-s-giao-dch-vi-ngân-hàng-khác)
         * [Tạo mới access_token cho admin](#to-mi-access_token-cho-admin)
 * [Một số thông tin mặc định được khởi tạo cùng với project, dùng để test api](#mt-s-thông-tin-mc-nh-c-khi-to-cùng-vi-project-dùng--test-api)
+    * [Danh sách tài khoản có sẵn](#danh-sách-tài-khon-có-sn)
+    * [Thông tin khách hàng](#thông-tin-khách-hàng)
+    * [Partner](#partner)
 * [Danh sách các ngân hàng  liên  kết](#danh-sách-các-ngân-hàng--liên--kt)
     * [Ngân hàng đại diện nhóm chẵn (PGP)](#ngân-hàng-i-din-nhóm-chn-pgp)
     * [Ngân hàng đại diện nhóm lẻ (RSA)](#ngân-hàng-i-din-nhóm-l-rsa)
@@ -63,10 +66,6 @@
     * [Deploy lên Kubernetes cluster trên Google Cloud](#deploy-lên-kubernetes-cluster-trên-google-cloud)
     * [GitlabCI](#gitlabci)
 * [Database diagram](#database-diagram)
-* [Danh sách tài khoản có sẵn](#danh-sách-tài-khon-có-sn)
-    * [Customer](#customer)
-    * [Employee](#employee)
-    * [Admin](#admin)
 * [Trang web hữu ích](#trang-web-hu-ích)
 
 <!-- vim-markdown-toc -->
@@ -683,6 +682,30 @@ HEADER
 
 ## Một số thông tin mặc định được khởi tạo cùng với project, dùng để test api
 
+### Danh sách tài khoản có sẵn
+
+**Customer**
+
+| Username | Password |
+| :-- | :-- |
+|  |  |
+
+**Employee**
+
+| Username | Password |
+| :-- | :-- |
+| linhnguyen | linhnguyen |
+| lamnguyen | lamnguyen |
+| khuedoan | khuedoan |
+
+**Admin**
+
+| Username | Password |
+| :-- | :-- |
+| admin | admin |
+
+### Thông tin khách hàng
+
 - Thông tin khách hàng linh
 
 ```json
@@ -710,6 +733,8 @@ HEADER
     "status": 1
 }
 ```
+
+### Partner
 
 - Thông tin partner linh mặc định, public key ở dạng **base64**
 
@@ -972,13 +997,12 @@ HEADER
 "id": "bankdbb"
 "ts": 1594529422
 "sig": "483b18c7f62eeefabf68db1a58cda22a52276e6f"
-
 ```
 
 - id là chuỗi code để xác định partner nào đã đăng kí api
 - ts là thời điểm gởi request, format sử dụng unix utc second, có thể  xem ở <https://www.epochconverter.com/,> lưu ý timestamp không được **lớn hơn** hoặc nhỏ hơn quá **60**s so với thời gian thực
 - sig là chuỗi hash sha1 của **timestamp+ ":" + JSON.stringify(body) + ":" + secret**, nếu body empty thì là **{}**,sau đó được encode hex lại và gửi đi, ví dụ ở trên
-- **secret** là ```bankdbb```
+- **secret** là `bankdbb`
 
 ```
 const crypto = require('crypto');
@@ -1074,28 +1098,6 @@ Khi merge vào `master`:
 ## Database diagram
 
 ![dbdiagram](./images/dbdiagram.png)
-
-## Danh sách tài khoản có sẵn
-
-### Customer
-
-| Username | Password |
-| :-- | :-- |
-|  |  |
-
-### Employee
-
-| Username | Password |
-| :-- | :-- |
-| linhnguyen | linhnguyen |
-| lamnguyen | lamnguyen |
-| khuedoan | khuedoan |
-
-### Admin
-
-| Username | Password |
-| :-- | :-- |
-| admin | admin |
 
 ## Trang web hữu ích
 
