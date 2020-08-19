@@ -688,7 +688,16 @@ HEADER
 
 | Username | Password |
 | :-- | :-- |
-|  |  |
+| donaldtrump | donaldtrump |
+| barackobama | barackobama |
+| georgebush | georgebush |
+| billclinton | billclinton |
+| ronaldreagan | ronaldreagan |
+| jimmycarter | jimmycarter |
+| geraldford | geraldford |
+| richardnixon | richardnixon |
+| lyndonjohnson | lyndonjohnson |
+| johnkennedy | johnkennedy |
 
 **Employee**
 
