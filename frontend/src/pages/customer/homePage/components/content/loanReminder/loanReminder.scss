@@ -1,0 +1,22 @@
+.loan-reminder {
+  .row {
+    align-items: center;
+  }
+  .max-width-desc {
+    max-width: 50px;
+  }
+  th {
+    font-size: 14px;
+  }
+  td {
+    font-size: 14px;
+  }
+  .td-button-container{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .btn-container{
+    width: 140px;
+  }
+}

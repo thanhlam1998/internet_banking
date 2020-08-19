@@ -30,7 +30,11 @@ const TransferForm = (props) => {
 
   const handleOnChangeBank = () => {
     if(props.soTaiKhoan) {
-      props.findReceiver(props.soTaiKhoan, props.tenNganHang.toLowerCase())
+      if(props.tenNganHang == "NaniBank" || props.tenNganHang == "N42"){
+        props.findReceiver(props.soTaiKhoan, props.tenNganHang)
+      } else {
+        props.findReceiver(props.soTaiKhoan, props.tenNganHang.toLowerCase())
+      }
     }
   }
 
@@ -98,15 +102,27 @@ const TransferForm = (props) => {
       props.setTenGoiNho(props.tenNguoiHuong);
     }
     const tenNguoiHuong = props.tenNguoiHuong;
-    props.transferInter(
-      tenNguoiHuong,
-      SoTK,
-      props.soTaiKhoan,
-      props.soTien,
-      props.nguoiTraPhi === props.sender ? 'sender' : 'receiver',
-      props.tenNganHang.toLowerCase(),
-      props.noiDung
-    )
+    if(props.tenNganHang == "NaniBank" || props.tenNganHang == "N42"){
+      props.transferInter(
+        tenNguoiHuong,
+        SoTK,
+        props.soTaiKhoan,
+        props.soTien,
+        props.nguoiTraPhi === props.sender ? 'sender' : 'receiver',
+        props.tenNganHang,
+        props.noiDung
+      )
+    } else {
+      props.transferInter(
+        tenNguoiHuong,
+        SoTK,
+        props.soTaiKhoan,
+        props.soTien,
+        props.nguoiTraPhi === props.sender ? 'sender' : 'receiver',
+        props.tenNganHang.toLowerCase(),
+        props.noiDung
+      )
+    }
   };
 
   return (
@@ -128,7 +144,7 @@ const TransferForm = (props) => {
           title="Số tài khoản"
           placeholder="Nhập số tài khoản"
           value={props.soTaiKhoan || ''}
-          onBlur={() => props.findReceiver(props.soTaiKhoan, props.tenNganHang.toLowerCase())}
+          onBlur={handleOnChangeBank}
           onChange={(e) => props.setSoTaiKhoan(e.target.value)}
         />
         <div className="receiver">

@@ -160,7 +160,7 @@ const deleteRemindList = (remind_id) => {
     const token = sessionStorage.getItem(NameItem.ACCESS_TOKEN);
     return axios
       .get(
-        `${baseURL}/api/customer/bedebts`,
+        `${baseURL}/api/customer/be-debts`,
         {
           headers: {
             access_token: token,
