@@ -8,10 +8,60 @@ const interbank_credit_info = (credit_number, partner_code) => {
   const options = {
     method: "GET",
     maxRedirects: 5,
-    timeout: 5000
+    timeout: 10000
   };
 
   switch (partner_code) {
+    case "N42": {
+      const ts = Date.now();
+      const postData = {};
+      const dataToHash = postData + ts + config.list_partner.N42.secret_text;
+      console.log(dataToHash)
+      let hashString = crypto.createHash('sha256').update(dataToHash).digest('hex');
+
+      options.hostname = config.list_partner.N42.host
+      options.path = `/api/interbank/get-account-info?number=${credit_number}`;
+      options.headers = {
+        'code': 'KAT',
+        'auth-hash': hashString,
+        'request-time': ts
+      };
+
+      return new Promise((resolve, reject) => {
+        var req = http.request(options, function (res) {
+          var chunks = '';
+
+          res.on("data", function (chunk) {
+            chunks += chunk;
+          });
+
+          res.on("end", function (chunk) {
+            console.log(chunks, res.statusCode)
+            if (res.statusCode > 400) {
+              resolve(undefined);
+              return;
+            }
+
+            var body = JSON.parse(chunks);
+            resolve(body["data"]["fullName"]);
+          });
+
+          res.on("error", function (error) {
+            console.log("error happen");
+            reject(undefined);
+          });
+
+        })
+
+        // use its "timeout" event to abort the request
+        req.on('timeout', () => {
+          resolve(undefined);
+          return;
+        });
+        req.end();
+      })
+    }
+
     case "NaniBank": {
       const ts = Math.floor(Date.now() / 1000)
       const postData = {}
