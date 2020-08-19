@@ -65,7 +65,7 @@ CREATE TABLE `credit_account` (
 
 LOCK TABLES `credit_account` WRITE;
 /*!40000 ALTER TABLE `credit_account` DISABLE KEYS */;
-INSERT INTO `credit_account` VALUES (3,'025917154505','100000',1),(4,'407103851140','100000',1),(1,'565572661049','500000',1);
+INSERT INTO `credit_account` VALUES (3,'025917154505','100000',1),(13,'107837111136','100000',1),(14,'134965984343','100000',1),(12,'156395860413','100000',1),(8,'317616012583','100000',1),(7,'400570008578','100000',1),(4,'407103851140','100000',1),(6,'413951248131','100000',1),(1,'565572661049','500000',1),(11,'597909357040','100000',1),(5,'625262950070','100000',1),(10,'752756900169','100000',1),(9,'821070931989','100000',1);
 /*!40000 ALTER TABLE `credit_account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -91,7 +91,7 @@ CREATE TABLE `customer` (
   UNIQUE KEY `identity_number` (`identity_number`),
   UNIQUE KEY `phone_number` (`phone_number`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -100,7 +100,7 @@ CREATE TABLE `customer` (
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` VALUES (1,'025895863','LINH','NGUYEN VAN','1998-11-12','0704468257','linh1612340@gmail.com','linh','$2a$08$gKlA.6Ie2HfU/IzgambPXOG.YinikOdf6pwaZxU6QBEB9ZWOyhinS','5FmWSukHG8PapSAcGrNS'),(3,'025895864','KHUE','DOAN','1998-11-12','0704468258','linh0903611@gmail.com','khue','$2a$08$YvaUktj.B6M4pBWWf6gqsujOcas03q3rIPZNI/8zW14rfS/WiN8P6','6sDwx1T5t8IMSPpsLmYS'),(4,'025842863','JINDO','KATORY','1998-11-12','0704468557','jindo@gmail.com','jindo','$2a$08$7q6hgvv71cKCHI.GiM9Z.unu9BBYPUl/lnnUrq8tbugxOrEkqujbe','KW7l0ATa4MutpvM7hhsW');
+INSERT INTO `customer` VALUES (1,'025895863','LINH','NGUYEN VAN','1998-11-12','0704468257','linh1612340@gmail.com','linh','$2a$08$gKlA.6Ie2HfU/IzgambPXOG.YinikOdf6pwaZxU6QBEB9ZWOyhinS','5FmWSukHG8PapSAcGrNS'),(3,'025895864','KHUE','DOAN','1998-11-12','0704468258','linh0903611@gmail.com','khue','$2a$08$YvaUktj.B6M4pBWWf6gqsujOcas03q3rIPZNI/8zW14rfS/WiN8P6','6sDwx1T5t8IMSPpsLmYS'),(4,'025842863','JINDO','KATORY','1998-11-12','0704468557','jindo@gmail.com','jindo','$2a$08$7q6hgvv71cKCHI.GiM9Z.unu9BBYPUl/lnnUrq8tbugxOrEkqujbe','KW7l0ATa4MutpvM7hhsW'),(5,'346018170','DONALD','TRUMP','1970-08-11','0346018170','donaldtrump@gmail.com','donaldtrump','$2a$08$opMPviHkHzOeu0H6puFgl.6fgs9AuEZDmz4pztXdgqEpgj2Ttbycm','7kfas1b4dcXnwRfit1Ld'),(6,'294038801','BARACK','OBAMA','1976-08-07','0294038801','barackobama@gmail.com','barackobama','$2a$08$ikByeoIAB3p90S/CTIps9uasfVQ7LMziAy4pn72bPpFeHur4N5/ou','lzQSnkyn9ISklZh0IqzK'),(7,'850297117','GEORGE','BUSH','1964-08-17','0850297117','georgebush@gmail.com','georgebush','$2a$08$CDRnEEzdsnRQfSo8aE/5vuXaMeBpwFQHYuz3nLrQmKsd/iQFDP3Im','Fgk71XyXgbO8PC2zgRtT'),(8,'407713428','BILL','CLINTON','1827-08-17','0407713428','billclinton@gmail.com','billclinton','$2a$08$79MptGssegFG3gmF0dwjmuuxmUregNRavOVMtWG46L.N8PFaaTGe2','SE0qH7FD3VyUy8vmHyX9'),(9,'475890764','RONALD','REAGAN','1821-08-06','0475890764','ronaldreagan@gmail.com','ronaldreagan','$2a$08$W5CwKqADgBFbYqiqBn19EudvCz6ZT9Wm.ShiOit0SSY0qYUS39cY2','RHAgr3XFxwWoEuDH5yPE'),(10,'189420657','JIMMY','CARTER','1728-08-08','0189420657','jimmycarter@gmail.com','jimmycarter','$2a$08$2wVb6QTMxzXnZc4dgoTrT.zW5nsrrd6O3vmZh9QxwrBG6jWmNJVFy','MTniZYgH2JFDZexUtKJo'),(11,'587590629','GERALD','FORD','1711-08-02','0587590629','geraldford@gmail.com','geraldford','$2a$08$0Sxq3HXfhlL5ShvSqhs1n.ZsqrBPXHaLGrEOPNWR7H0XQ3DuaInSi','qc80J3U5vx4oYcKWI0D8'),(12,'438542752','RICHARD','NIXON','1677-08-25','0438542752','richardnixon@gmail.com','richardnixon','$2a$08$kB7LjjMAynOm//9QpU0VTu4LsHvt/4wKPifmB/78CaDhMpYf/VSoK','rJCxpJqwWIn6yLsxwUPm'),(13,'121398875','LYNDON','JOHNSON','1676-07-26','0121398875','lyndonjohnson@gmail.com','lyndonjohnson','$2a$08$XbXYUZYCfyDNaVqr3Arcs.4QOPBPrh8RCu/0e0/zsW9bxTTi/nJMm','EgNrhcU5XXO3RIqfnnAc'),(14,'484338172','JOHN','KENNEDY','1661-07-06','0484338172','johnkennedy@gmail.com','johnkennedy','$2a$08$vde8BAbibs7SJOLosKUnk.KlAZqbFOr344bjftSn/gitZGxpduby2','gW2rZqoVBoy3icJWJz4a');
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -189,7 +189,7 @@ CREATE TABLE `employee` (
 
 LOCK TABLES `employee` WRITE;
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
-INSERT INTO `employee` VALUES ('trump',1,'$2a$08$z/eROGEhVaw2HNino1zm/.IOsrV6VZApPLW58OEmZOHgYNKgoSBRq','jXHvcBfimELm08lOAT1x'),('linhnguyen',2,'$2a$08$GBxBwOQmgqnPey6V5U4PA.zWaB3l9EZHu40bgkXFdv0s0UBNxFv02','EmSa4EasanF0ZKEaVaz4'),('lamnguyen',3,'$2a$08$l5V2RG6RCcCEPLmQaHNkC.kkR9.qE8mUloirE.Z1P97eAAB7fMFy2','t4N7oZ7BUurlnQIlo1D1'),('khuedoan',4,'$2a$08$hTti.RNvkUKldXxc24okHO5ZKOGoI7CBBegImM1WRKwR9pFsKTVp.','6gvqJetSstbDbHwFxXit');
+INSERT INTO `employee` VALUES ('linhnguyen',2,'$2a$08$GBxBwOQmgqnPey6V5U4PA.zWaB3l9EZHu40bgkXFdv0s0UBNxFv02','EmSa4EasanF0ZKEaVaz4'),('lamnguyen',3,'$2a$08$l5V2RG6RCcCEPLmQaHNkC.kkR9.qE8mUloirE.Z1P97eAAB7fMFy2','t4N7oZ7BUurlnQIlo1D1'),('khuedoan',4,'$2a$08$hTti.RNvkUKldXxc24okHO5ZKOGoI7CBBegImM1WRKwR9pFsKTVp.','6gvqJetSstbDbHwFxXit');
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -509,4 +509,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-08-18 15:36:24
+-- Dump completed on 2020-08-19 14:27:15
