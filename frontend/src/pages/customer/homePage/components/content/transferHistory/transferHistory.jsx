@@ -128,7 +128,7 @@ const TransferHistory = ({ bankAccount, getTransactionHistory }) => {
                   <td>{item.transaction_id}</td>
                   {item.to_credit_number &&
                   <td><b>Gửi</b></td>}
-                  {(item.from_credit_number || item.partner_code !== 'local') &&
+                  {!item.to_credit_number && (item.from_credit_number || item.partner_code !== 'local') &&
                   <td><b>Nhận</b></td>}
                   {!item.to_credit_number && !item.from_credit_number && item.partner_code === 'local' &&
                   <td><b>Nạp tiền</b></td>}
