@@ -11,7 +11,7 @@ function login(username, password){
           dispatch(success(res))
         }
       ).catch(error => {
-        dispatch(failure(error.response.data))
+        dispatch(failure(error))
       }) 
     };
     function request(){return{type: EmpConstants.LOGIN_REQUEST}};
@@ -91,6 +91,23 @@ function findTransactionHistory(credit_number){
     function failure(error){return{type: EmpConstants.FIND_TRANSACTION_HISTORY_ERROR, payload: error}};
 };
 
+function refreshAccessToken(){
+  return (dispatch) => {
+    dispatch(request());
+    EmpServices.refreshAccessToken()
+    .then(
+      res =>{
+        dispatch(success(res))
+      }
+      ).catch(error => {
+        dispatch(failure(error))
+      }) 
+    };
+    function request(){ return{type: EmpConstants.REFRESH_EMPLOYEE_ACCESS_TOKEN_PENDING}};
+    function success(res){return{type: EmpConstants.REFRESH_EMPLOYEE_ACCESS_TOKEN_SUCCESS, payload: res}};
+    function failure(error){return{type: EmpConstants.REFRESH_EMPLOYEE_ACCESS_TOKEN_ERROR, payload: error}};
+};
+
 export const employeeActions = {
   login, 
   logout,
@@ -98,4 +115,5 @@ export const employeeActions = {
   findCustomer,
   addMoneyToCustomer,
   findTransactionHistory,
+  refreshAccessToken
 }

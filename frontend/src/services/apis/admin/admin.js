@@ -99,6 +99,20 @@ const updatePasswordEmployee = (employee_id, password) => {
     });
 }
 
+const getTransactionList = () => {
+  const token = sessionStorage.getItem(NameItem.ACCESS_TOKEN);
+  return axios
+    .get(`${baseURL}/api/admin/get-interbank-transaction`,
+    {
+      headers: {
+        access_token: token,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    });
+}
+
 
 export const AdminServices = {
   login,
@@ -106,5 +120,6 @@ export const AdminServices = {
   createEmployee,
   deleteEmployee,
   updateUsernameEmployee,
-  updatePasswordEmployee
+  updatePasswordEmployee,
+  getTransactionList
 };

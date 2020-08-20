@@ -1,5 +1,5 @@
-import { EmpConstants } from '../actions/constants/employee/emp_constants';
-import NameItem from '../config/sessionStorage';
+import { EmpConstants } from "../actions/constants/employee/emp_constants";
+import NameItem from "../config/sessionStorage";
 
 const initialState = {
   loggingIn: false,
@@ -21,12 +21,15 @@ const initialState = {
   findTransactionHistoryPending: false,
   findTransactionHistorySuccess: false,
   findTransactionHistoryError: null,
+
+  refreshTokenPending: false,
+  refreshTokenSuccess: false,
+  refreshTokenError: null,
 };
 
 const employee = (state = initialState, action) => {
   switch (action.type) {
-
-/* ----------------------------- login employee ----------------------------- */
+    /* ----------------------------- login employee ----------------------------- */
     case EmpConstants.LOGIN_REQUEST:
       return {
         loggingIn: true,
@@ -39,7 +42,7 @@ const employee = (state = initialState, action) => {
           NameItem.ACCESS_TOKEN,
           action.payload.access_token
         );
-        sessionStorage.setItem(
+        localStorage.setItem(
           NameItem.REFRESH_TOKEN,
           action.payload.refresh_token
         );
@@ -56,7 +59,7 @@ const employee = (state = initialState, action) => {
         loginError: action.payload,
       };
 
-/* ----------------------------- logout employee ---------------------------- */
+    /* ----------------------------- logout employee ---------------------------- */
     case EmpConstants.LOGOUT:
       sessionStorage.removeItem(NameItem.ACCESS_TOKEN);
       sessionStorage.removeItem(NameItem.REFRESH_TOKEN);
@@ -64,7 +67,7 @@ const employee = (state = initialState, action) => {
         logout: true,
       };
 
-/* ---------------------------- add new customer ---------------------------- */
+    /* ---------------------------- add new customer ---------------------------- */
     case EmpConstants.ADD_CUSTOMER_PENDING:
       return {
         addCustomerPending: true,
@@ -84,7 +87,7 @@ const employee = (state = initialState, action) => {
         addCustomerError: action.payload,
       };
 
-/* ------------------- find customer name by credit_number ------------------ */
+    /* ------------------- find customer name by credit_number ------------------ */
     case EmpConstants.FIND_CUSTOMER_PENDING:
       return {
         findCustomerPending: true,
@@ -96,7 +99,7 @@ const employee = (state = initialState, action) => {
         findCustomerPending: false,
         findCustomerSuccess: true,
         findCustomerError: null,
-        full_name: action.payload.lastname + ' ' + action.payload.firstname,
+        full_name: action.payload.fullname,
       };
     case EmpConstants.FIND_CUSTOMER_ERROR:
       return {
@@ -105,7 +108,7 @@ const employee = (state = initialState, action) => {
         findCustomerError: action.payload,
       };
 
-/* --------------------- add money to customer acccount --------------------- */
+    /* --------------------- add money to customer acccount --------------------- */
     case EmpConstants.ADD_MONEY_TO_CUSTOMER_PENDING:
       return {
         addMoneyToCustomerPending: true,
@@ -125,8 +128,8 @@ const employee = (state = initialState, action) => {
         addMoneyToCustomerError: action.payload,
       };
 
-/* ------------------ find transaction history of customer ------------------ */
-      case EmpConstants.FIND_TRANSACTION_HISTORY_PENDING:
+    /* ------------------ find transaction history of customer ------------------ */
+    case EmpConstants.FIND_TRANSACTION_HISTORY_PENDING:
       return {
         findTransactionHistoryPending: true,
         findTransactionHistorySuccess: false,
@@ -137,13 +140,39 @@ const employee = (state = initialState, action) => {
         findTransactionHistoryPending: false,
         findTransactionHistorySuccess: true,
         findTransactionHistoryError: null,
-        transactionHistory: action.payload
+        transactionHistory: action.payload,
       };
     case EmpConstants.FIND_TRANSACTION_HISTORY_ERROR:
       return {
         findTransactionHistoryPending: false,
         findTransactionHistorySuccess: false,
         findTransactionHistoryError: action.payload,
+      };
+
+    /* ------------------------------ refresh token ----------------------------- */
+    case EmpConstants.REFRESH_EMPLOYEE_ACCESS_TOKEN_PENDING:
+      return {
+        refreshTokenPending: true,
+        refreshTokenSuccess: false,
+        refreshTokenError: null,
+      };
+    case EmpConstants.REFRESH_EMPLOYEE_ACCESS_TOKEN_SUCCESS:
+      if (action.payload !== null) {
+        sessionStorage.setItem(
+          NameItem.ACCESS_TOKEN,
+          action.payload.access_token
+        );
+      }
+      return {
+        refreshTokenPending: false,
+        refreshTokenSuccess: true,
+        refreshTokenError: null,
+      };
+    case EmpConstants.REFRESH_EMPLOYEE_ACCESS_TOKEN_ERROR:
+      return {
+        refreshTokenPending: false,
+        refreshTokenSuccess: false,
+        refreshTokenError: action.payload,
       };
     default:
       return state;

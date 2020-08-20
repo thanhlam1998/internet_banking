@@ -25,6 +25,20 @@ const TransferForm = (props) => {
   const banks = partnerBank.map(item => item.name)
 
   useEffect(() => {
+    props.setTenNganHang(banks[0])
+  }, [])
+
+  const handleOnChangeBank = () => {
+    if(props.soTaiKhoan) {
+      if(props.tenNganHang == "NaniBank" || props.tenNganHang == "N42"){
+        props.findReceiver(props.soTaiKhoan, props.tenNganHang)
+      } else {
+        props.findReceiver(props.soTaiKhoan, props.tenNganHang.toLowerCase())
+      }
+    }
+  }
+
+  useEffect(() => {
     if (props.transfer.findReceiverError && props.soTaiKhoan) {
       NotificationManager.error('Không tìm thấy tài khoản thẻ');
     }
@@ -37,11 +51,11 @@ const TransferForm = (props) => {
     if (props.transfer.getRemindListSuccess === true) {
       setRemindList(props.transfer.remindList);
     }
-    if(props.transfer.transferLocalSuccess === true && props.transfer.onChangedState === true){
+    if(props.transfer.transferInterSuccess === true && props.transfer.onChangedState === true){
       props.transfer.onChangedState = false
       props.setStep(2);
     }
-    if(props.transfer.transferLocalError){
+    if(props.transfer.transferInterError){
       NotificationManager.error('Đã có lỗi xảy ra, vui lòng thử lại sau ít phút');
     }
   }, [props.transfer]);
@@ -71,7 +85,7 @@ const TransferForm = (props) => {
       return;
     }
     if(props.nguoiTraPhi === props.sender){
-      if(money - (props.soTien + bankConfig.local_transfer_fee) < bankConfig.min_balance){
+      if(money - (props.soTien + bankConfig.inter_transfer_fee) < bankConfig.min_balance){
         NotificationManager.error('Số tiền của quý khách không đủ để thực hiện giao dịch');
         return;
       }
@@ -86,6 +100,28 @@ const TransferForm = (props) => {
     }
     if (props.luuThongTin && !props.tenGoiNho) {
       props.setTenGoiNho(props.tenNguoiHuong);
+    }
+    const tenNguoiHuong = props.tenNguoiHuong;
+    if(props.tenNganHang == "NaniBank" || props.tenNganHang == "N42"){
+      props.transferInter(
+        tenNguoiHuong,
+        SoTK,
+        props.soTaiKhoan,
+        props.soTien,
+        props.nguoiTraPhi === props.sender ? 'sender' : 'receiver',
+        props.tenNganHang,
+        props.noiDung
+      )
+    } else {
+      props.transferInter(
+        tenNguoiHuong,
+        SoTK,
+        props.soTaiKhoan,
+        props.soTien,
+        props.nguoiTraPhi === props.sender ? 'sender' : 'receiver',
+        props.tenNganHang.toLowerCase(),
+        props.noiDung
+      )
     }
   };
 
@@ -108,12 +144,23 @@ const TransferForm = (props) => {
           title="Số tài khoản"
           placeholder="Nhập số tài khoản"
           value={props.soTaiKhoan || ''}
-          onBlur={() => props.findReceiver(props.soTaiKhoan)}
+          onBlur={handleOnChangeBank}
           onChange={(e) => props.setSoTaiKhoan(e.target.value)}
         />
+        <div className="receiver">
+          <TextInput
+            title="Tên người hưởng"
+            placeholder="Tên người huởng"
+            value={props.tenNguoiHuong || ''}
+            disabled={true}/>
+        {props.transfer.findReceiverPending === true && <i className="fa fa-refresh fa-spin mr-3"/>}
+        </div>
+        
         <SelectInput
           title ="Ngân hàng"
           placeholder= "Chọn ngân hàng"
+          onChange={e => props.setTenNganHang(e.target.value)}
+          onBlur = {handleOnChangeBank}
           items={banks}/>
         <CheckBox
           label="Lưu thông tin người hưởng"
@@ -138,7 +185,7 @@ const TransferForm = (props) => {
           className="btn btn-success float-center"
           type="button"
           onClick={() => handleForSubmit()}>
-            {props.transfer.transferLocalPending === true && <i className="fa fa-refresh fa-spin mr-3"/>}
+            {props.transfer.transferInterPending === true && <i className="fa fa-refresh fa-spin mr-3"/>}
           Chuyển tiền
         </button>
       </div>
@@ -152,23 +199,25 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  findReceiver: (credit_number) =>
-    dispatch(transferActions.findReceiver(credit_number)),
-  transferLocal: (
+  findReceiver: (credit_number, partner_code) =>
+    dispatch(transferActions.findReceiver(credit_number, partner_code)),
+  transferInter: (
     name,
     from_credit_number,
     to_credit_number,
     amount,
     fee_payer,
+    partner_code,
     message
   ) =>
     dispatch(
-      transferActions.transferLocal(
+      transferActions.transferInter(
         name,
         from_credit_number,
         to_credit_number,
         amount,
         fee_payer,
+        partner_code,
         message
       )
     ),

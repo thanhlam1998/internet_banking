@@ -91,6 +91,25 @@ function deleteEmployee(employee_id){
     function failure(error){return{type: AdminConstants.DELETE_EMPLOYEE_ERROR, payload: error}};
 };
 
+function getTransactionList(){
+  return (dispatch) => {
+    dispatch(request());
+    AdminServices.getTransactionList()
+    .then(
+      res =>{
+        dispatch(success(res))
+      }
+      ).catch(error => {
+        dispatch(failure(error))
+      }) 
+    };
+    function request(){ return{type: AdminConstants.GET_TRANSACTION_LIST_PENDING}};
+    function success(res){return{type: AdminConstants.GET_TRANSACTION_LIST_SUCCESS, payload: res}};
+    function failure(error){return{type: AdminConstants.GET_TRANSACTION_LIST_ERROR, payload: error}};
+};
+
+
+
 
 export const AdminActions = {
   login, 
@@ -98,5 +117,6 @@ export const AdminActions = {
   getAllEmployee,
   createEmployee,
   updatePasswordEmployee,
-  deleteEmployee
+  deleteEmployee,
+  getTransactionList
 }

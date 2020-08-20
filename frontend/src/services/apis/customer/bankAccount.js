@@ -103,11 +103,87 @@ const deleteRemindList = (remind_id) => {
         return res.data;
       });
   }
+  const addDebt = (credit_number, amount, content) => {
+    const token = sessionStorage.getItem(NameItem.ACCESS_TOKEN);
+    return axios
+      .post(
+        `${baseURL}/api/customer/add-debt`,
+        { 
+          debtor_credit: credit_number,
+          amount: amount,
+          content: content
+        },
+        {
+          headers: {
+            access_token: token,
+          },
+        }
+      )
+      .then((res) => {
+        return res.data;
+      });
+  }
+  const deleteDebt = (id) => {
+    const token = sessionStorage.getItem(NameItem.ACCESS_TOKEN);
+    return axios
+      .put(
+        `${baseURL}/api/customer/remove-debt`,
+        {
+          debt_id: id
+        },
+        {
+          headers: {
+            access_token: token,
+          },
+        }
+      )
+      .then((res) => {
+        return res.data;
+      });
+  }
+  const getDebt = () => {
+    const token = sessionStorage.getItem(NameItem.ACCESS_TOKEN);
+    return axios
+      .get(
+        `${baseURL}/api/customer/debts`,
+        {
+          headers: {
+            access_token: token,
+          },
+        }
+      )
+      .then((res) => {
+        return res.data;
+      });
+  }
+  const getBeDebt = () => {
+    const token = sessionStorage.getItem(NameItem.ACCESS_TOKEN);
+    return axios
+      .get(
+        `${baseURL}/api/customer/be-debts`,
+        {
+          headers: {
+            access_token: token,
+          },
+        }
+      )
+      .then((res) => {
+        return res.data;
+      });
+  }
+
+
+
+
 export const BankAccountServices = {
     getListAccount,
     getRemindList,
     createRemindList,
     deleteRemindList,
     updateRemindList,
-    getTransactionHistory
+    getTransactionHistory,
+    addDebt,
+    deleteDebt,
+    getDebt,
+    getBeDebt
 }
