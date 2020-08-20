@@ -14,6 +14,7 @@ const TransferLocal = ({ bankAccount, getBankAccount, transfer, getRemindList })
   const [soTaiKhoan, setSoTaiKhoan] = useState();
   const [tenNguoiHuong, setTenNguoiHuong] = useState();
   const [tenGoiNho, setTenGoiNho] = useState();
+  const [tenNganHang, setTenNganHang] = useState()
   const [luuThongTin, setLuuThongTin] = useState(false);
   const [soTien, setSoTien] = useState();
   const [noiDung, setNoiDung] = useState();
@@ -26,8 +27,8 @@ const TransferLocal = ({ bankAccount, getBankAccount, transfer, getRemindList })
   }, []);
 
   return (
-    <div className="transferLocal">
-      <Title title="CHUYỂN TIỀN CHO NGƯỜI HƯỞNG Ở CÙNG NGÂN HÀNG" />
+    <div className="transferAbroad">
+      <Title title="CHUYỂN TIỀN CHO NGƯỜI HƯỞNG Ở KHÁC NGÂN HÀNG" />
       {step === 1 && bankAccount.credit_account && (
         <TransferForm
           sender = {sender}
@@ -40,6 +41,8 @@ const TransferLocal = ({ bankAccount, getBankAccount, transfer, getRemindList })
           setTenNguoiHuong={setTenNguoiHuong}
           tenGoiNho={tenGoiNho}
           setTenGoiNho={setTenGoiNho}
+          tenNganHang = {tenNganHang}
+          setTenNganHang = {setTenNganHang}
           luuThongTin = {luuThongTin}
           setLuuThongTin = {setLuuThongTin}
           soTien={soTien}

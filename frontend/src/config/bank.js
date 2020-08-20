@@ -6,11 +6,15 @@ export const bankConfig = {
 
 export const partnerBank = [
     {
-        name: "Nanibank",
+        name: "NaniBank",
         partnerCode: "nanibank"
     },
     {
         name: "Bankdbb",
         partnerCode: "bankdbb"
+    },
+    {
+        name: "N42",
+        partnerCode: "N42"
     }
 ]

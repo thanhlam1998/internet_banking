@@ -37,7 +37,7 @@ const admin = (state = initialState, action) => {
           NameItem.ACCESS_TOKEN,
           action.payload.access_token
         );
-        sessionStorage.setItem(
+        localStorage.setItem(
             NameItem.REFRESH_TOKEN,
             action.payload.refresh_token
           );
@@ -135,6 +135,26 @@ const admin = (state = initialState, action) => {
           deleteEmployeePending: false,
           deleteEmployeeSuccess: false,
           deleteEmployeeError: action.payload,
+        }
+
+      case AdminConstants.GET_TRANSACTION_LIST_PENDING:
+        return {
+          getTransactionListPending: true,
+          getTransactionListSuccess: false,
+          getTransactionListError: null,
+        }
+      case AdminConstants.GET_TRANSACTION_LIST_SUCCESS:
+        return {
+          getTransactionListPending: false,
+          getTransactionListSuccess: true,
+          transactionList: action.payload,
+          getTransactionListError: null,
+        }
+      case AdminConstants.GET_TRANSACTION_LIST_ERROR:
+        return {
+          getTransactionListPending: false,
+          getTransactionListSuccess: false,
+          getTransactionListError: action.payload,
         }
     default:
       return state;

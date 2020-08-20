@@ -67,7 +67,7 @@ const AddMoneyToAccount = ({employee, findCustomer, addMoneyToCustomer}) => {
             placeholder="Nhập số tài khoản"
             type="text"
             onChange={(e) => setCreditNumber(e.target.value)}
-            onBlur = {() => findCustomer(creditNumber)}
+            onBlur = {() => creditNumber && findCustomer(creditNumber)}
           />
           <TextInput
             title="Tên khách hàng"

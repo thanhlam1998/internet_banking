@@ -36,6 +36,39 @@ const transferLocal = (
     });
 };
 
+const transferInter = (
+  name,
+  from_credit_number,
+  to_credit_number,
+  amount,
+  fee_payer,
+  partner_code,
+  message
+) => {
+  const token = sessionStorage.getItem(NameItem.ACCESS_TOKEN);
+  return axios
+    .post(
+      `${baseURL}/api/customer/transfer-fund`,
+      {
+        target_fullname: name,
+        from_credit_number: from_credit_number,
+        to_credit_number: to_credit_number,
+        amount: amount,
+        fee_payer: fee_payer,
+        partner_code: partner_code,
+        message: message,
+      },
+      {
+        headers: {
+          access_token: token,
+        },
+      }
+    )
+    .then((res) => {
+      return res.data;
+    });
+};
+
 const verifyOtp = (id, otp) => {
   const token = sessionStorage.getItem(NameItem.ACCESS_TOKEN);
   return axios
@@ -56,12 +89,13 @@ const verifyOtp = (id, otp) => {
     });
 };
 
-const findReceiver = (credit_number) => {
+const findReceiver = (credit_number, partner_code="local") => {
   const token = sessionStorage.getItem(NameItem.ACCESS_TOKEN);
   let config ={
     headers: {access_token: token},
     params: {
-      credit_number: credit_number
+      credit_number: credit_number,
+      partner_code: partner_code
     },
   }
   return axios.get(
@@ -104,6 +138,7 @@ const saveRemindList = (credit_number, remind_name, bank_name) => {
 
 export const TransferServices = {
   transferLocal,
+  transferInter,
   verifyOtp,
   findReceiver,
   getRemindList,

@@ -109,7 +109,7 @@ const TransactionHistory = ({ employee, findCustomer, findTransactionHistory }) 
             placeholder="Nhập số tài khoản"
             className="form-control col-4"
             onChange={(e) => setCreditNumber(e.target.value)}
-            onBlur = {() => findCustomer(creditNumber)}
+            onBlur = {() => creditNumber && findCustomer(creditNumber)}
           />
           <input
             type="text"
